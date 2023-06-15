@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scrambler", "Scrambler\Scrambler.csproj", "{942017E0-B53E-4331-855E-497750565FF2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScramblerTest", "ScramblerTest\ScramblerTest.csproj", "{649AD965-FDB5-4405-A8BA-DEF00524DE9A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{942017E0-B53E-4331-855E-497750565FF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{942017E0-B53E-4331-855E-497750565FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{942017E0-B53E-4331-855E-497750565FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{942017E0-B53E-4331-855E-497750565FF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{649AD965-FDB5-4405-A8BA-DEF00524DE9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{649AD965-FDB5-4405-A8BA-DEF00524DE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{649AD965-FDB5-4405-A8BA-DEF00524DE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{649AD965-FDB5-4405-A8BA-DEF00524DE9A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB79D160-6780-46F5-A261-A01B4E26E9B1}
+	EndGlobalSection
+EndGlobal

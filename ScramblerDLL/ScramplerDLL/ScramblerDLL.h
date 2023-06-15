@@ -6,17 +6,18 @@
 #define SCRAMBLERDLL_API __declspec(dllimport)
 #endif //  SCRAMBLERDLL_EXPROTS
 
-extern "C" SCRAMBLERDLL_API void fibonacci_init(
-    const unsigned long long a, const unsigned long long b);
+extern "C" class SCRAMBLERDLL_API Two_Fish {
+public:
+	void two_fish_init();
 
+	bool set_size_key(const unsigned int size);
+	bool set_fish_key(char key[]);
 
-// Produce the next value in the sequence.
-// Returns true on success and updates current value and index;
-// false on overflow, leaves current value and index unchanged.
-extern "C" SCRAMBLERDLL_API bool fibonacci_next();
+	char* Encode(const char word[], const unsigned int offset);
+	char* Decode(const char word[], const unsigned int offset);
 
-// Get the current value in the sequence.
-extern "C" SCRAMBLERDLL_API unsigned long long fibonacci_current();
+	bool clear();
+	bool dispose();
 
-// Get the position of the current value in the sequence.
-extern "C" SCRAMBLERDLL_API unsigned fibonacci_index();
+};
+

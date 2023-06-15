@@ -3,21 +3,44 @@
 
 #include <iostream>
 #include "ScramblerDLL.h"
+#include <string.h>
 
 int main()
 {
     std::cout << "Hello World!\n";
     //Initialize a Fibonacci relation sequence.
-    fibonacci_init(1, 1);
-    // Write out the sequence values until overflow.
-    do {
-        std::cout << fibonacci_index() << ": "
-            << fibonacci_current() << std::endl;
-    } while (fibonacci_next());
-    // Report count of values written before overflow.
-    std::cout << fibonacci_index() + 1 <<
-        " Fibonacci sequence values fit in an " <<
-        "unsigned 64-bit integer." << std::endl;
+
+
+    std::string str = "Hello world! My name is Hutler!!";
+
+    Two_Fish fish = Two_Fish();
+    
+    fish.set_size_key(256);
+
+    char key[32];
+    for (int i = 0; i < 32; i++)
+    {
+        std::cout << key[i];
+    }
+    fish.set_fish_key(key);
+
+    std::cout << "\nCode:\n";
+
+    char* res = fish.Encode(str.c_str(), 0);
+    for (int i = 0; i < 32; i++)
+    {
+        std::cout << res[i];
+    }
+    std::cout << "\nDecode:\n";
+
+    char* res2 = fish.Decode(res, 0);
+    for (int i = 0; i < 32; i++)
+    {
+        std::cout << res2[i];
+    }
+    delete[] res;
+    delete[] res2;
+    fish.dispose();
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
