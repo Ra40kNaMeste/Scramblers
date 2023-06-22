@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model ="clr-namespace:PassManager.ViewModels"
+             x:Class="PassManager.Views.KeysView"
+             Title="Keys">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackLayout Orientation="Horizontal">
+            <ImageButton Source="add.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding AddKeyCommand}"/>
+            <ImageButton Source="update.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding UpdateCommand}"/>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1">
+            <ListView ItemsSource="{Binding Keys}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Name}"/>
+                                <Button Grid.Column="1" Text="..." Command="{Binding EditCommand}"/>
+                                <Button Grid.Column="2" Text=">" Command="{Binding SelectCommand}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+
+    </Grid>
+</ContentPage>

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scrambler", "Scrambler\Scra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScramblerTest", "ScramblerTest\ScramblerTest.csproj", "{649AD965-FDB5-4405-A8BA-DEF00524DE9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassManager", "PassManager\PassManager.csproj", "{F64E86EB-91B3-4353-83AE-DE5ADF71E156}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{649AD965-FDB5-4405-A8BA-DEF00524DE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{649AD965-FDB5-4405-A8BA-DEF00524DE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{649AD965-FDB5-4405-A8BA-DEF00524DE9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F64E86EB-91B3-4353-83AE-DE5ADF71E156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F64E86EB-91B3-4353-83AE-DE5ADF71E156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F64E86EB-91B3-4353-83AE-DE5ADF71E156}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F64E86EB-91B3-4353-83AE-DE5ADF71E156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F64E86EB-91B3-4353-83AE-DE5ADF71E156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F64E86EB-91B3-4353-83AE-DE5ADF71E156}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

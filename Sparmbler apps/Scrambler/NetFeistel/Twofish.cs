@@ -113,6 +113,7 @@ namespace Scrambler.NetFeistel
             for (int i = 0; i < 4; i++)
             {
                 BitConverter.GetBytes(copyWord[i] ^ keys[4 + i]).CopyTo(res, i * 4);
+                copyWord[i] = 0;
             }
             return res;
         }
@@ -141,8 +142,17 @@ namespace Scrambler.NetFeistel
             for (int i = 0; i < 4; i++)
             {
                 BitConverter.GetBytes(copyWord[i] ^ keys[i]).CopyTo(res, i * 4);
+                copyWord[i] = 0;
             }
             return res;
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < 40; i++)
+            {
+                keys[i] = 0;
+            }
         }
 
         private int gFunc(int word)
@@ -219,6 +229,12 @@ namespace Scrambler.NetFeistel
             Key = new byte[KeySize / 8];
             for (int i = Key.GetLowerBound(0); i < Key.GetUpperBound(0); i++)
                 Key[i] = 0;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            Clear();
         }
     }
 
