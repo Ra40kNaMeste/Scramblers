@@ -1,8 +1,9 @@
 ﻿using Android.App;
 using Android.Runtime;
-
+[assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage, MaxSdkVersion = 32)]
 namespace PassManager
 {
+
     [Application]
     public class MainApplication : MauiApplication
     {

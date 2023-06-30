@@ -10,10 +10,13 @@ using System.Threading.Tasks;
 
 namespace PassManager.ViewConverters
 {
-    internal class KeyPathVisual:INotifyPropertyChanged
+    /// <summary>
+    /// Прокси, который представляет оболочку над моделью KeyPathReaderBase для визуализации
+    /// </summary>
+    internal class PathReaderVisual:INotifyPropertyChanged
     {
 
-        public KeyPathVisual(KeyPathReaderBase keyPath) 
+        public PathReaderVisual (PathReaderBase keyPath) 
         {
             TargetKeyPath = keyPath;
             keyPath.PropertyChanged += (sender, e) => OnPropertyChanged(nameof(Name)); 
@@ -21,7 +24,7 @@ namespace PassManager.ViewConverters
 
         public string Name => TargetKeyPath.Name;
 
-        public KeyPathReaderBase TargetKeyPath { get; init; }
+        public PathReaderBase TargetKeyPath { get; init; }
 
         private OnlyEnabledCommand editCommand;
         public OnlyEnabledCommand EditCommand => editCommand ??= new((p) => Request?.Invoke(this, new(RequestedOperation.Edit)));
@@ -33,6 +36,10 @@ namespace PassManager.ViewConverters
             return TargetKeyPath.Enable;
         });
 
+        private OnlyEnabledCommand deleteCommand;
+        public OnlyEnabledCommand DeleteCommand => deleteCommand ??= new((p) => Request?.Invoke(this, new(RequestedOperation.Delete)));
+
+
         public event Action<object, RequestedEventArgs> Request;
         private void OnPropertyChanged([CallerMemberName]string propertyName = "")=>PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,7 +47,7 @@ namespace PassManager.ViewConverters
 
     internal enum RequestedOperation
     {
-        Edit, Select
+        Edit, Select, Delete
     }
     internal class RequestedEventArgs
     {

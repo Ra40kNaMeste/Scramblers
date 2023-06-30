@@ -2,9 +2,9 @@ using PassManager.ViewConverters;
 
 namespace PassManager.Views;
 
-public class KeyEditView : ContentPage
+public class PathEditView : ContentPage
 {
-    public KeyEditView(IGeneratorVisualProperties generator)
+    public PathEditView(IGeneratorVisualProperties generator)
     {
         Content = VisualOperations.CreateGridProperties(generator);
     }

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -11,98 +10,25 @@ using System.Threading.Tasks;
 
 namespace PassManager.Model
 {
-
-    public interface IKeyPathReader 
+    public abstract class PassPathReaderBase: PathReaderBase
     {
-        public string ReadKey();
+
+        public async Task<Dictionary<string, string>> ReadPassAsync()
+        {
+            return await Task.Run(ReadPass);
+        }
+        public abstract Dictionary<string, string> ReadPass();
+
+        public async Task WritePassAsync(Dictionary<string, string> pass)
+        {
+            await Task.Run(()=>WritePass(pass));
+        }
+        public abstract void WritePass(Dictionary<string, string> pass);
     }
-
-    /// <summary>
-    /// Класс, который читает ключ из файла
-    /// </summary>
-    public abstract class PathReaderBase : INotifyPropertyChanged, IGeneratorVisualProperties
+    public class PassPathByDrive : PassPathReaderBase
     {
-        public PathReaderBase()
-        {
-            Enable = false;
-            Name = "";
-        }
 
-        /// <summary>
-        /// Имя класса
-        /// </summary>
-        private string name;
-        public string Name
-        {
-            get => name;
-            set
-            {
-                name = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Переменная, показывающая, можно ли читать
-        /// </summary>
-        private bool enable;
-        public bool Enable
-        {
-            get => enable;
-            private set
-            {
-                enable = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        /// <summary>
-        /// Можно ли прочитать ключ
-        /// </summary>
-        /// <returns></returns>
-        protected abstract bool CanEnable();
-
-        /// <summary>
-        /// Обновить
-        /// </summary>
-        public void Update() => Enable = CanEnable();
-
-        public virtual List<PropertyInfo> GetVisualProeprties()
-        {
-            return new()
-            {
-               GetType().GetProperty(nameof(Name))
-            };
-        }
-
-        protected void OnPropertyChanged([CallerMemberName] string name = "") => PropertyChanged?.Invoke(this, new(name));
-
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
-
-    public abstract class KeyPathReaderBase : PathReaderBase, IKeyPathReader
-    {
-        public async Task WriteKeyAsync(string value)
-        {
-            await Task.Run(() => WriteKey(value));
-        }
-        public abstract void WriteKey(string value);
-        
-        public async Task<string> ReadKeyAsync()
-        {
-            return await Task.Run(ReadKey);
-        }
-        public abstract string ReadKey();
-    }
-
-
-    /// <summary>
-    /// Читает ключ с диска. Возможность работы с внутренними и внешними дисками
-    /// </summary>
-    public class KeyPathByDrive : KeyPathReaderBase
-    {
-        public KeyPathByDrive() : base() 
+        public PassPathByDrive() : base()
         {
             DriveLabel = "";
             DriveName = "";
@@ -115,7 +41,7 @@ namespace PassManager.Model
         /// <param name="name">Имя класса</param>
         /// <param name="drive">Диск</param>
         /// <param name="path">Путь до файла без диска</param>
-        public KeyPathByDrive(string name, DriveInfo drive, string path)
+        public PassPathByDrive(string name, DriveInfo drive, string path)
         {
             Name = name;
             DriveLabel = drive.VolumeLabel;
@@ -155,7 +81,7 @@ namespace PassManager.Model
         /// <summary>
         /// Путь до файла
         /// </summary>
-        public string Path 
+        public string Path
         {
             get => path;
             set
@@ -164,8 +90,6 @@ namespace PassManager.Model
                 OnPropertyChanged();
             }
         }
-
-
 
         protected override bool CanEnable()
         {
@@ -196,7 +120,8 @@ namespace PassManager.Model
                     DriveName = drive.Name;
             }
         }
-        public override string ReadKey()
+
+        public override Dictionary<string, string> ReadPass()
         {
             UpdateDriveName();
 
@@ -205,23 +130,28 @@ namespace PassManager.Model
 
             try
             {
-                return File.ReadAllText(Path);
+                return File.ReadAllText(Path).Split('\n').ToDictionary(i =>i.Split('\t')[0], i => i.Split('\t')[1]);
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        public override void WriteKey(string value)
+
+        public override void WritePass(Dictionary<string, string> pass)
         {
             UpdateDriveName();
-
             if (!File.Exists(Path))
-                throw new FileNotFoundException(Path);
+                throw new FileNotFoundException(DriveName + Path);
 
             try
             {
-                File.WriteAllText(Path, value);
+                string str = "";
+                foreach (var item in pass)
+                {
+                    str += $"{0}\t{1}\n";
+                }
+                File.WriteAllText(Path, str.Substring(0, str.Length - 1));
             }
             catch (Exception)
             {
@@ -229,5 +159,4 @@ namespace PassManager.Model
             }
         }
     }
-
 }

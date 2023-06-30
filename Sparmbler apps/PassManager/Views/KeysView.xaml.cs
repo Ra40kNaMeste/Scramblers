@@ -6,8 +6,11 @@ public partial class KeysView : ContentPage
 {
 	public KeysView()
 	{
-        BindingContext = new KeysViewModel() { TargetPage = this };
-
+		
+        var vm = BindingContext ?? new KeysViewModel();
+		if (vm is KeysViewModel model)
+			model.TargetPage = this;
+		BindingContext = vm;
         InitializeComponent();
 	}
 }

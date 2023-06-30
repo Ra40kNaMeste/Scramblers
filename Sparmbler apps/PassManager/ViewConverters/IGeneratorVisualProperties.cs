@@ -54,14 +54,18 @@ namespace PassManager.ViewConverters
         /// </summary>
         /// <param name="generator">Генератор свойств</param>
         /// <returns></returns>
-        public static Grid CreateGridProperties(IGeneratorVisualProperties generator)
+        public static StackLayout CreateGridProperties(IGeneratorVisualProperties generator)
         {
             //Создание сетки
             var props = generator.GetVisualProeprties();
-            Grid res = new();
+            StackLayout result = new StackLayout();
+
+            Grid grid = new();
+            result.Add(grid);
+
             int row = 0;
-            res.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
-            res.ColumnDefinitions.Add(new());
+            grid.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new());
             //Заполнение сетки
             foreach (PropertyInfo prop in props)
             {
@@ -96,18 +100,18 @@ namespace PassManager.ViewConverters
                 binding.Path = nameof(VisualProperties.Name);
                 label.SetBinding(Label.TextProperty, binding);
 
-                res.RowDefinitions.Add(new RowDefinition());
+                grid.RowDefinitions.Add(new RowDefinition());
                 Grid.SetColumn(label, 0);
                 Grid.SetRow(label, row);
-                res.Add(label);
+                grid.Add(label);
 
                 //Генерация поля для выбора
                 var valueBox = GetViewValueBuilderByType(prop.GetValue(generator).GetType()).Build(visual);
                 Grid.SetColumn(valueBox, 1);
                 Grid.SetRow(valueBox, row++);
-                res.Add(valueBox);
+                grid.Add(valueBox);
             }
-            return res;
+            return result;
         }
 
         private static Dictionary<Type, IViewValueBuilder> viewValueBuidlders = new()

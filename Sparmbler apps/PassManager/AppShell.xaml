@@ -7,6 +7,6 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <ShellContent Title="main" ContentTemplate="{DataTemplate local:KeysView}"/>
+        <ShellContent Title="main" ContentTemplate="{DataTemplate local:KeysView}" BindingContext="{Binding }"/>
     </TabBar>
 </Shell>

@@ -24,11 +24,13 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="{Binding Name}"/>
-                                <Button Grid.Column="1" Text="..." Command="{Binding EditCommand}"/>
-                                <Button Grid.Column="2" Text=">" Command="{Binding SelectCommand}"/>
+                                <HorizontalStackLayout Grid.Column="1">
+                                    <ImageButton Source="remove.png" Command="{Binding DeleteCommand}"/>
+                                    <Button Text="..." Command="{Binding EditCommand}"/>
+                                    <Button Text=">" Command="{Binding SelectCommand}"/>
+                                </HorizontalStackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
