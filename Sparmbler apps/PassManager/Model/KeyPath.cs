@@ -7,12 +7,14 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace PassManager.Model
 {
 
-    public interface IKeyPathReader 
+    public interface IKeyPathReader
     {
         public string ReadKey();
     }
@@ -88,7 +90,7 @@ namespace PassManager.Model
             await Task.Run(() => WriteKey(value));
         }
         public abstract void WriteKey(string value);
-        
+
         public async Task<string> ReadKeyAsync()
         {
             return await Task.Run(ReadKey);
@@ -102,7 +104,81 @@ namespace PassManager.Model
     /// </summary>
     public class KeyPathByDrive : KeyPathReaderBase
     {
-        public KeyPathByDrive() : base() 
+        public KeyPathByDrive() 
+        {
+            Path = new();
+        }
+        public PathByDrive Path { get; init; }
+
+        protected override bool CanEnable()
+        {
+            UpdateDriveName();
+            return File.Exists(Path.Path);
+        }
+
+        public override List<PropertyInfo> GetVisualProeprties()
+        {
+            var res = base.GetVisualProeprties();
+            Type type = GetType();
+            res.Add(type.GetProperty(nameof(Path)));
+            return res;
+        }
+
+        /// <summary>
+        /// Обновление имени раздела по имени диска
+        /// </summary>
+        private void UpdateDriveName()
+        {
+            if (Path.DriveLabel != null)
+            {
+                var drives = DriveInfo.GetDrives();
+                var drive = drives.Where(i => i.VolumeLabel == Path.DriveLabel).FirstOrDefault();
+                if (drive != null)
+                {
+                    //Path.Path = Path.Path.Replace(Path.Drive, Path.)
+                    Path.DriveName = drive.Name;
+
+                }
+            }
+        }
+        public override string ReadKey()
+        {
+            UpdateDriveName();
+
+            if (!File.Exists(Path.Path))
+                throw new FileNotFoundException(Path.Path);
+
+            try
+            {
+                return File.ReadAllText(Path.Path);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public override void WriteKey(string value)
+        {
+            UpdateDriveName();
+
+            if (!File.Exists(Path.Path))
+                throw new FileNotFoundException(Path.Path);
+
+            try
+            {
+                File.WriteAllText(Path.Path, value);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    public class PathByDrive:INotifyPropertyChanged
+    {
+
+        public PathByDrive() : base()
         {
             DriveLabel = "";
             DriveName = "";
@@ -112,16 +188,28 @@ namespace PassManager.Model
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name">Имя класса</param>
         /// <param name="drive">Диск</param>
         /// <param name="path">Путь до файла без диска</param>
-        public KeyPathByDrive(string name, DriveInfo drive, string path)
+        public PathByDrive(DriveInfo drive, string path)
         {
-            Name = name;
             DriveLabel = drive.VolumeLabel;
             DriveName = drive.Name;
             Path = path;
         }
+
+
+        /// <summary>
+        /// Подстраивается под полный путь
+        /// </summary>
+        /// <param name="fullPath">Путь</param>
+        public void SetPath(string fullPath)
+        {
+            DriveLabel = System.IO.Path.GetPathRoot(fullPath);
+            var drives = DriveInfo.GetDrives();
+            DriveName = drives.Where(i => DriveLabel.Contains(i.Name)).FirstOrDefault()?.VolumeLabel ?? string.Empty;
+            Path = fullPath;
+        }
+
 
         private string driveLabel;
         /// <summary>
@@ -155,7 +243,7 @@ namespace PassManager.Model
         /// <summary>
         /// Путь до файла
         /// </summary>
-        public string Path 
+        public string Path
         {
             get => path;
             set
@@ -167,67 +255,7 @@ namespace PassManager.Model
 
 
 
-        protected override bool CanEnable()
-        {
-            UpdateDriveName();
-            return File.Exists(Path);
-        }
-
-        public override List<PropertyInfo> GetVisualProeprties()
-        {
-            var res = base.GetVisualProeprties();
-            Type type = this.GetType();
-            res.Add(type.GetProperty(nameof(DriveLabel)));
-            res.Add(type.GetProperty(nameof(DriveName)));
-            res.Add(type.GetProperty(nameof(Path)));
-            return res;
-        }
-
-        /// <summary>
-        /// Обновление имени раздела по имени диска
-        /// </summary>
-        private void UpdateDriveName()
-        {
-            if (DriveLabel != null)
-            {
-                var drives = DriveInfo.GetDrives();
-                var drive = drives.Where(i => i.VolumeLabel == DriveLabel).FirstOrDefault();
-                if (drive != null)
-                    DriveName = drive.Name;
-            }
-        }
-        public override string ReadKey()
-        {
-            UpdateDriveName();
-
-            if (!File.Exists(Path))
-                throw new FileNotFoundException(Path);
-
-            try
-            {
-                return File.ReadAllText(Path);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        public override void WriteKey(string value)
-        {
-            UpdateDriveName();
-
-            if (!File.Exists(Path))
-                throw new FileNotFoundException(Path);
-
-            try
-            {
-                File.WriteAllText(Path, value);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new(propertyName));
+        public event PropertyChangedEventHandler PropertyChanged;
     }
-
 }

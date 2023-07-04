@@ -29,13 +29,6 @@ namespace PassManager.ViewConverters
         private OnlyEnabledCommand editCommand;
         public OnlyEnabledCommand EditCommand => editCommand ??= new((p) => Request?.Invoke(this, new(RequestedOperation.Edit)));
 
-        private UniversalCommand selectCommand;
-        public UniversalCommand SelectCommand => selectCommand ??= new((p) => Request?.Invoke(this, new(RequestedOperation.Select)), (p) =>
-        {
-            TargetKeyPath.Update();
-            return TargetKeyPath.Enable;
-        });
-
         private OnlyEnabledCommand deleteCommand;
         public OnlyEnabledCommand DeleteCommand => deleteCommand ??= new((p) => Request?.Invoke(this, new(RequestedOperation.Delete)));
 
@@ -47,7 +40,7 @@ namespace PassManager.ViewConverters
 
     internal enum RequestedOperation
     {
-        Edit, Select, Delete
+        Edit, Delete
     }
     internal class RequestedEventArgs
     {

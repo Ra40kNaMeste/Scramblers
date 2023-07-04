@@ -117,16 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DriveLabelProperty" xml:space="preserve">
-    <value>Drive label</value>
-  </data>
-  <data name="DriveNameProperty" xml:space="preserve">
-    <value>Drive name</value>
-  </data>
   <data name="NameProperty" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="PathProperty" xml:space="preserve">
     <value>Path</value>
+  </data>
+  <data name="SaveFileTitle" xml:space="preserve">
+    <value>Safe file</value>
+  </data>
+  <data name="SavePassDefaultFolder" xml:space="preserve">
+    <value>pass.ps</value>
+  </data>
+  <data name="SavePassDefaultName" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SelectFileTitle" xml:space="preserve">
+    <value>Select file</value>
   </data>
 </root>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="39.8639mm" height="39.8639mm" viewBox="0 0 113 113">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #1d1d1b;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #1d1d1b;
+      }
+    </style>
+  </defs>
+  <g id="Слой_2" data-name="Слой 2">
+    <g id="Слой_1-2" data-name="Слой 1">
+      <path class="cls-1" d="M112.5,31.23v75.69a5.58,5.58,0,0,1-5.58,5.58H6.08A5.58,5.58,0,0,1,.5,106.92V6.08A5.58,5.58,0,0,1,6.08.5H81.77Z"/>
+      <rect class="cls-2" x="15.7008" y="10.3317" width="68.4356" height="24.7129" rx="6.1782"/>
+      <path class="cls-2" d="M28.5721,47.6386H82.9879A10.9307,10.9307,0,0,1,93.9186,58.5693v45.8614a0,0,0,0,1,0,0H17.6414a0,0,0,0,1,0,0V58.5693A10.9307,10.9307,0,0,1,28.5721,47.6386Z"/>
+      <rect class="cls-2" x="99.1067" y="86.1337" width="6.6535" height="6.6535"/>
+      <rect class="cls-2" x="6.4335" y="86.1337" width="6.6535" height="6.6535"/>
+      <rect class="cls-1" x="71.78" y="13.1832" width="7.3663" height="17.5842" rx="2.6139"/>
+    </g>
+  </g>
+</svg>

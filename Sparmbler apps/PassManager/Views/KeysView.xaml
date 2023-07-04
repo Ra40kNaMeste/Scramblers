@@ -11,12 +11,13 @@
         </Grid.RowDefinitions>
 
         <StackLayout Orientation="Horizontal">
-            <ImageButton Source="add.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding AddKeyCommand}"/>
+            <ImageButton Source="add.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding GenerateCommand}"/>
+            <ImageButton Source="open.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding OpenKeyCommand}"/>
             <ImageButton Source="update.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding UpdateCommand}"/>
         </StackLayout>
 
         <StackLayout Grid.Row="1">
-            <ListView ItemsSource="{Binding Keys}">
+            <ListView ItemsSource="{Binding Keys}" SelectedItem="{Binding SelectKey}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -27,9 +28,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Text="{Binding Name}"/>
                                 <HorizontalStackLayout Grid.Column="1">
-                                    <ImageButton Source="remove.png" Command="{Binding DeleteCommand}"/>
+                                    <ImageButton Source="remove.png" MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding DeleteCommand}"/>
                                     <Button Text="..." Command="{Binding EditCommand}"/>
-                                    <Button Text=">" Command="{Binding SelectCommand}"/>
                                 </HorizontalStackLayout>
                             </Grid>
                         </ViewCell>

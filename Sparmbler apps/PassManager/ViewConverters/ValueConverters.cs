@@ -30,22 +30,6 @@ namespace PassManager.ViewConverters
         }
     }
 
-    internal class DriveLabelPropertyConverter : UniversalPropertyConverter
-    {
-        protected override string GetProperty()
-        {
-            return Resources.DriveLabelProperty;
-        }
-    }
-
-    internal class DriveNamePropertyConverter : UniversalPropertyConverter
-    {
-        protected override string GetProperty()
-        {
-            return Resources.DriveNameProperty;
-        }
-    }
-
     internal class PathPropertyConverter : UniversalPropertyConverter
     {
         protected override string GetProperty()

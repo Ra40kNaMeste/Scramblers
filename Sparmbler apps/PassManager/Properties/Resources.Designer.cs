@@ -61,24 +61,6 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Drive label.
-        /// </summary>
-        internal static string DriveLabelProperty {
-            get {
-                return ResourceManager.GetString("DriveLabelProperty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Drive name.
-        /// </summary>
-        internal static string DriveNameProperty {
-            get {
-                return ResourceManager.GetString("DriveNameProperty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Name.
         /// </summary>
         internal static string NameProperty {
@@ -93,6 +75,42 @@ namespace PassManager.Properties {
         internal static string PathProperty {
             get {
                 return ResourceManager.GetString("PathProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Safe file.
+        /// </summary>
+        internal static string SaveFileTitle {
+            get {
+                return ResourceManager.GetString("SaveFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на pass.ps.
+        /// </summary>
+        internal static string SavePassDefaultFolder {
+            get {
+                return ResourceManager.GetString("SavePassDefaultFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password.
+        /// </summary>
+        internal static string SavePassDefaultName {
+            get {
+                return ResourceManager.GetString("SavePassDefaultName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select file.
+        /// </summary>
+        internal static string SelectFileTitle {
+            get {
+                return ResourceManager.GetString("SelectFileTitle", resourceCulture);
             }
         }
     }

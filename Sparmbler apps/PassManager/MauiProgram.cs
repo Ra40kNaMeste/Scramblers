@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using PassManager.Views;
+using System.Reflection;
 
 namespace PassManager
 {
@@ -14,6 +17,14 @@ namespace PassManager
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            //Добавление пакета настроек
+
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PassManager.appsettings.json");
+            var config = new ConfigurationBuilder().AddJsonStream(stream).Build();
+            builder.Configuration.AddConfiguration(config);
+
+            builder.Services.AddTransient<KeysView>();
 
 #if DEBUG
 		builder.Logging.AddDebug();
