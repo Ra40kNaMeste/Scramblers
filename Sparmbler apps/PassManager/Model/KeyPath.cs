@@ -1,4 +1,5 @@
-﻿using PassManager.ViewConverters;
+﻿using Newtonsoft.Json;
+using PassManager.ViewConverters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,7 @@ namespace PassManager.Model
     /// <summary>
     /// Класс, который читает ключ из файла
     /// </summary>
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public abstract class PathReaderBase : INotifyPropertyChanged, IGeneratorVisualProperties
     {
         public PathReaderBase()
@@ -34,6 +36,7 @@ namespace PassManager.Model
         /// Имя класса
         /// </summary>
         private string name;
+        [JsonProperty]
         public string Name
         {
             get => name;
@@ -83,6 +86,7 @@ namespace PassManager.Model
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public abstract class KeyPathReaderBase : PathReaderBase, IKeyPathReader
     {
         public async Task WriteKeyAsync(string value)
@@ -102,13 +106,25 @@ namespace PassManager.Model
     /// <summary>
     /// Читает ключ с диска. Возможность работы с внутренними и внешними дисками
     /// </summary>
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KeyPathByDrive : KeyPathReaderBase
     {
         public KeyPathByDrive() 
         {
             Path = new();
         }
-        public PathByDrive Path { get; init; }
+
+        private PathByDrive path;
+        [JsonProperty]
+        public PathByDrive Path 
+        {
+            get => path;
+            set
+            {
+                path = value;
+                OnPropertyChanged();
+            }
+        }
 
         protected override bool CanEnable()
         {
@@ -129,15 +145,16 @@ namespace PassManager.Model
         /// </summary>
         private void UpdateDriveName()
         {
-            if (Path.DriveLabel != null)
+            if (Path.DriveName != null)
             {
                 var drives = DriveInfo.GetDrives();
-                var drive = drives.Where(i => i.VolumeLabel == Path.DriveLabel).FirstOrDefault();
-                if (drive != null)
+                if(Path.DriveLabel != "")
                 {
-                    //Path.Path = Path.Path.Replace(Path.Drive, Path.)
-                    Path.DriveName = drive.Name;
-
+                    var drive = drives.Where(i => i.VolumeLabel == Path.DriveLabel).FirstOrDefault();
+                    if (drive != null)
+                    {
+                        Path.DriveName = drive.Name;
+                    }
                 }
             }
         }
@@ -175,13 +192,14 @@ namespace PassManager.Model
         }
     }
 
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class PathByDrive:INotifyPropertyChanged
     {
 
         public PathByDrive() : base()
         {
-            DriveLabel = "";
             DriveName = "";
+            DriveLabel = "";
             Path = "";
         }
 
@@ -192,8 +210,8 @@ namespace PassManager.Model
         /// <param name="path">Путь до файла без диска</param>
         public PathByDrive(DriveInfo drive, string path)
         {
-            DriveLabel = drive.VolumeLabel;
-            DriveName = drive.Name;
+            DriveName = drive.VolumeLabel;
+            DriveLabel = drive.Name;
             Path = path;
         }
 
@@ -204,9 +222,9 @@ namespace PassManager.Model
         /// <param name="fullPath">Путь</param>
         public void SetPath(string fullPath)
         {
-            DriveLabel = System.IO.Path.GetPathRoot(fullPath);
+            DriveName = System.IO.Path.GetPathRoot(fullPath);
             var drives = DriveInfo.GetDrives();
-            DriveName = drives.Where(i => DriveLabel.Contains(i.Name)).FirstOrDefault()?.VolumeLabel ?? string.Empty;
+            DriveLabel = drives.Where(i => DriveName.Contains(i.Name)).FirstOrDefault()?.VolumeLabel ?? string.Empty;
             Path = fullPath;
         }
 
@@ -215,7 +233,8 @@ namespace PassManager.Model
         /// <summary>
         /// Имя диска. Если диск внутренний - нет
         /// </summary>
-        public string DriveLabel
+        [JsonProperty]
+        public string DriveName
         {
             get => driveLabel;
             set
@@ -229,7 +248,8 @@ namespace PassManager.Model
         /// <summary>
         /// Имя раздела
         /// </summary>
-        public string DriveName
+        [JsonProperty]
+        public string DriveLabel
         {
             get => driveName;
             set
@@ -243,6 +263,7 @@ namespace PassManager.Model
         /// <summary>
         /// Путь до файла
         /// </summary>
+        [JsonProperty]
         public string Path
         {
             get => path;
@@ -252,9 +273,6 @@ namespace PassManager.Model
                 OnPropertyChanged();
             }
         }
-
-
-
         private void OnPropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new(propertyName));
         public event PropertyChangedEventHandler PropertyChanged;
     }

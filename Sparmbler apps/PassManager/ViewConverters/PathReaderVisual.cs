@@ -15,16 +15,29 @@ namespace PassManager.ViewConverters
     /// </summary>
     internal class PathReaderVisual:INotifyPropertyChanged
     {
+        public PathReaderVisual()
+        {
 
+        }
         public PathReaderVisual (PathReaderBase keyPath) 
         {
             TargetKeyPath = keyPath;
-            keyPath.PropertyChanged += (sender, e) => OnPropertyChanged(nameof(Name)); 
         }
 
         public string Name => TargetKeyPath.Name;
 
-        public PathReaderBase TargetKeyPath { get; init; }
+        private PathReaderBase targetKeyPath;
+        public PathReaderBase TargetKeyPath 
+        {
+            get => targetKeyPath;
+            set
+            {
+                targetKeyPath= value;
+                targetKeyPath.PropertyChanged += (sender, e) => OnPropertyChanged(nameof(Name));
+                OnPropertyChanged();
+
+            }
+        }
 
         private OnlyEnabledCommand editCommand;
         public OnlyEnabledCommand EditCommand => editCommand ??= new((p) => Request?.Invoke(this, new(RequestedOperation.Edit)));

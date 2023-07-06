@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using PassManager.Commands;
 using PassManager.Model;
+using PassManager.Settings;
 using PassManager.ViewConverters;
 using PassManager.Views;
 using System;
@@ -25,6 +27,11 @@ namespace PassManager.ViewModels
         private void Initialize()
         {
             Keys = new();
+            //Запись при закрытии окна
+            var eventManager = DependencyService.Get<AppEventManager>();
+            eventManager.Destroying += (o, e) => Save();
+            //загрузка открытых паролей
+            Open();
         }
 
         private ObservableCollection<PathReaderVisual> keys;
@@ -49,7 +56,16 @@ namespace PassManager.ViewModels
             }
         }
 
-        public Page TargetPage { get; set; }
+        private Page targetPage;
+        public Page TargetPage
+        {
+            get => targetPage;
+            set
+            {
+                targetPage = value;
+                OnPropertyChanged();
+            }
+        }
 
         private OnlyEnabledCommand openKeyCommand;
         public OnlyEnabledCommand OpenKeyCommand => openKeyCommand ??= new(OpenKeyBody);
@@ -87,7 +103,7 @@ namespace PassManager.ViewModels
                     case RequestedOperation.Edit:
                         TargetPage.Navigation.PushAsync(new PathEditView(visual.TargetKeyPath, Configuration));
                         break;
-                        case RequestedOperation.Delete:
+                    case RequestedOperation.Delete:
                         Keys.Remove(visual);
                         break;
                     default:
@@ -113,6 +129,68 @@ namespace PassManager.ViewModels
                 key.TargetKeyPath.Update();
             }
         }
+
+
+        private void Open()
+        {
+            var fs = Configuration.GetRequiredSection("SaveUserPathsListSettings").Get<SaveUserPathsListSettings>();
+            var settings = Configuration.GetRequiredSection("Settings").Get<Settings.Settings>();
+            var path = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + settings.DataFolder + "\\" + fs.PassFilesXAMLPath;
+
+            if (File.Exists(path))
+            {
+                try
+                {
+                    string str = File.ReadAllText(path);
+                    var keys = JsonConvert.DeserializeObject(str, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+
+                    Keys.Clear();
+
+                    if (keys is IEnumerable<PathReaderBase> temp)
+                    {
+                        foreach (var key in temp)
+                        {
+                            key.Update();
+                            var t = new PathReaderVisual(key);
+                            t.Request += RequesKey;
+                            Keys.Add(t);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        File.Delete(path);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        private void Save()
+        {
+            var fs = Configuration.GetRequiredSection("SaveUserPathsListSettings").Get<SaveUserPathsListSettings>();
+            var settings = Configuration.GetRequiredSection("Settings").Get<Settings.Settings>();
+            var path = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + settings.DataFolder;
+            try
+            {
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                path += "\\" + fs.PassFilesXAMLPath;
+                if (!File.Exists(path))
+                    File.Create(path);
+                File.WriteAllText(path, JsonConvert.SerializeObject(Keys.Select(i => i.TargetKeyPath).ToList(), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }));
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
         private void OnPropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new(propertyName));
         public event PropertyChangedEventHandler PropertyChanged;
     }
