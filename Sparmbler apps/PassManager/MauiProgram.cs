@@ -25,9 +25,10 @@ namespace PassManager
             builder.Configuration.AddConfiguration(config);
 
             builder.Services.AddTransient<KeysView>();
+            builder.Services.AddTransient<PassPathsView>();
 
 #if DEBUG
-		builder.Logging.AddDebug();
+		    builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

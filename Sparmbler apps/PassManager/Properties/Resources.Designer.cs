@@ -61,11 +61,29 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Keys.
+        /// </summary>
+        internal static string KeysTabName {
+            get {
+                return ResourceManager.GetString("KeysTabName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Name.
         /// </summary>
         internal static string NameProperty {
             get {
                 return ResourceManager.GetString("NameProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pass.
+        /// </summary>
+        internal static string PassPatchsBarName {
+            get {
+                return ResourceManager.GetString("PassPatchsBarName", resourceCulture);
             }
         }
         
@@ -97,11 +115,20 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Password.
+        ///   Ищет локализованную строку, похожую на password.ps.
         /// </summary>
         internal static string SavePassDefaultName {
             get {
                 return ResourceManager.GetString("SavePassDefaultName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на pass.mps.
+        /// </summary>
+        internal static string SavePathDefaultName {
+            get {
+                return ResourceManager.GetString("SavePathDefaultName", resourceCulture);
             }
         }
         

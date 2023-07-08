@@ -11,6 +11,19 @@ using System.Threading.Tasks;
 
 namespace PassManager.ViewConverters
 {
+    public enum TargetFileType
+    {
+        Key, Pass 
+    }
+    public class CreatedValueOptions
+    {
+        public CreatedValueOptions()
+        {
+            FileType = TargetFileType.Key;
+        }
+       public  TargetFileType FileType { get; set; }
+    }
+
     internal static class VisualOperations
     {
         /// <summary>
@@ -18,7 +31,7 @@ namespace PassManager.ViewConverters
         /// </summary>
         /// <param name="generator">Генератор свойств</param>
         /// <returns></returns>
-        public static StackLayout CreateGridProperties(IGeneratorVisualProperties generator, IConfiguration configuration)
+        public static StackLayout CreateGridProperties(IGeneratorVisualProperties generator, IConfiguration configuration, CreatedValueOptions options)
         {
             //Создание сетки
             var props = generator.GetVisualProeprties();
@@ -70,7 +83,7 @@ namespace PassManager.ViewConverters
                 grid.Add(label);
 
                 //Генерация поля для выбора
-                var valueBox = GetViewValueBuilderByType(prop.GetValue(generator).GetType()).Build(visual, configuration);
+                var valueBox = GetViewValueBuilderByType(prop.GetValue(generator).GetType()).Build(visual, configuration, options);
                 Grid.SetColumn(valueBox, 1);
                 Grid.SetRow(valueBox, row++);
                 grid.Add(valueBox);
@@ -98,19 +111,6 @@ namespace PassManager.ViewConverters
         };
 
   
-        public static Dictionary<DevicePlatform, IEnumerable<string>> CreatePassTypeDictionary(IConfiguration configuration)
-        {
-            var fileType = configuration.GetRequiredSection("FileSettings").Get<FileSettings>();
-            Dictionary<DevicePlatform, IEnumerable<string>> res = new();
-            foreach (var platform in platforms)
-                if (platform == DevicePlatform.WinUI)
-                    res.Add(platform, fileType.PassTypes.Select(i => "." + i));
-                else
-                    res.Add(platform, fileType.PassTypes);
-
-            return res;
-        }
-
         public static Dictionary<DevicePlatform, IEnumerable<string>> CreatePassFileTypeDictionary(IConfiguration configuration)
         {
             var fileType = configuration.GetRequiredSection("FileSettings").Get<FileSettings>();
@@ -120,6 +120,19 @@ namespace PassManager.ViewConverters
                     res.Add(platform, fileType.PassFileTypes.Select(i => "." + i));
                 else
                     res.Add(platform, fileType.PassFileTypes);
+
+            return res;
+        }
+
+        public static Dictionary<DevicePlatform, IEnumerable<string>> CreateKeyFileTypeDictionary(IConfiguration configuration)
+        {
+            var fileType = configuration.GetRequiredSection("FileSettings").Get<FileSettings>();
+            Dictionary<DevicePlatform, IEnumerable<string>> res = new();
+            foreach (var platform in platforms)
+                if (platform == DevicePlatform.WinUI)
+                    res.Add(platform, fileType.KeyFileTypes.Select(i => "." + i));
+                else
+                    res.Add(platform, fileType.KeyFileTypes);
 
             return res;
         }

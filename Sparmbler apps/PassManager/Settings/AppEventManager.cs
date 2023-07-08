@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PassManager.Settings
 {
+    /// <summary>
+    /// Класс для связи с событиями приложения
+    /// </summary>
     public class AppEventManager
     {
         public AppEventManager() 

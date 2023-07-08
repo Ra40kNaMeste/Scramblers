@@ -9,12 +9,13 @@ namespace PassManager.Settings
     
     internal class FileSettings
     {
+        public string[] KeyFileTypes { get; set; }
         public string[] PassFileTypes { get; set; }
-        public string[] PassTypes { get; set; }
     }
     internal class SaveUserPathsListSettings
     {
         public string PassFilesXAMLPath { get; set; }
+        public string KeyFilesXAMLPath { get; set; }
     }
     internal class Settings
     {

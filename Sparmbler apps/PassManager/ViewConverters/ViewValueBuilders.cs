@@ -12,12 +12,12 @@ namespace PassManager.ViewConverters
 {
     internal interface IViewValueBuilder
     {
-        public View Build(VisualProperties visual, IConfiguration configuration);
+        public View Build(VisualProperties visual, IConfiguration configuration, CreatedValueOptions options);
     }
 
     internal class StringValueBuilder : IViewValueBuilder
     {
-        public View Build(VisualProperties visual, IConfiguration configuration)
+        public View Build(VisualProperties visual, IConfiguration configuration, CreatedValueOptions options)
         {
             Editor editor = new();
             Binding binding = new Binding();
@@ -32,7 +32,7 @@ namespace PassManager.ViewConverters
     }
     internal class PathValueBuilder : IViewValueBuilder
     {
-        public View Build(VisualProperties visual, IConfiguration configuration)
+        public View Build(VisualProperties visual, IConfiguration configuration, CreatedValueOptions options)
         {
             Grid res = new();
             res.ColumnDefinitions.Add(new ColumnDefinition());
@@ -52,10 +52,20 @@ namespace PassManager.ViewConverters
             {
                 try
                 {
-                    PickOptions options = new();
-                    options.FileTypes = new(VisualOperations.CreatePassFileTypeDictionary(configuration));
-                    options.PickerTitle = Properties.Resources.SelectFileTitle;
-                    var result = await FilePicker.Default.PickAsync(options);
+                    PickOptions pickOptions = new();
+                    switch (options.FileType)
+                    {
+                        case TargetFileType.Key:
+                            pickOptions.FileTypes = new(VisualOperations.CreateKeyFileTypeDictionary(configuration));
+                            break;
+                        case TargetFileType.Pass:
+                            pickOptions.FileTypes = new(VisualOperations.CreatePassFileTypeDictionary(configuration));
+                            break;
+                        default:
+                            break;
+                    }
+                    pickOptions.PickerTitle = Properties.Resources.SelectFileTitle;
+                    var result = await FilePicker.Default.PickAsync(pickOptions);
                     if (result != null)
                         ((PathByDrive)visual.Value).SetPath(result.FullPath);
                 }

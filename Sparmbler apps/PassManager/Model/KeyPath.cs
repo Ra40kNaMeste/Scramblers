@@ -103,11 +103,16 @@ namespace PassManager.Model
     }
 
 
+    public interface IPathByDriveable
+    {
+        public PathByDrive Path { get; set; }
+    }
+
     /// <summary>
     /// Читает ключ с диска. Возможность работы с внутренними и внешними дисками
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class KeyPathByDrive : KeyPathReaderBase
+    public class KeyPathByDrive : KeyPathReaderBase, IPathByDriveable
     {
         public KeyPathByDrive() 
         {

@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using PassManager.Settings;
 using PassManager.ViewModels;
-
 namespace PassManager.Views;
 
 public partial class KeysView : ContentPage
@@ -11,7 +10,7 @@ public partial class KeysView : ContentPage
 		
         var vm = BindingContext ?? new KeysViewModel(configuration);
 
-		if (vm is KeysViewModel model)
+		if (vm is PassPathsViewModel model)
 		{
             model.TargetPage = this;
         }

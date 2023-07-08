@@ -6,8 +6,8 @@ namespace PassManager.Views;
 
 public class PathEditView : ContentPage
 {
-    public PathEditView(IGeneratorVisualProperties generator, IConfiguration configuration)
+    public PathEditView(IGeneratorVisualProperties generator, IConfiguration configuration, CreatedValueOptions options)
     {
-        Content = VisualOperations.CreateGridProperties(generator, configuration);
+        Content = VisualOperations.CreateGridProperties(generator, configuration, options);
     }
 }
