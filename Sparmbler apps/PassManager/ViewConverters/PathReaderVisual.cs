@@ -45,6 +45,17 @@ namespace PassManager.ViewConverters
         private OnlyEnabledCommand deleteCommand;
         public OnlyEnabledCommand DeleteCommand => deleteCommand ??= new((p) => Request?.Invoke(this, new(RequestedOperation.Delete)));
 
+        private bool isSelect;
+        public bool IsSelect
+        {
+            get => isSelect;
+            set
+            {
+                isSelect = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public event Action<object, RequestedEventArgs> Request;
         private void OnPropertyChanged([CallerMemberName]string propertyName = "")=>PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

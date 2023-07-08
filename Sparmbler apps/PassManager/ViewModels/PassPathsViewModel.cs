@@ -53,13 +53,19 @@ namespace PassManager.ViewModels
             }
         }
 
-        private PathReaderBase selectKey;
-        public PathReaderBase SelectPath
+        private PathReaderVisual selectPath;
+        public PathReaderVisual SelectPath
         {
-            get => selectKey;
+            get => selectPath;
             set
             {
-                selectKey = value;
+                selectPath = value;
+                foreach (var item in paths)
+                {
+                    item.IsSelect = false;
+                }
+                if(selectPath!= null)
+                    selectPath.IsSelect = true;
                 OnPropertyChanged();
             }
         }
@@ -113,12 +119,7 @@ namespace PassManager.ViewModels
 
         public void OpenPathBody(object parameter)
         {
-            KeyPathReaderBase key = new KeyPathByDrive();
-            var keyPathVisual = new PathReaderVisual(key);
-            keyPathVisual.Request += RequesKey;
-            Paths.Add(keyPathVisual);
-            RequesKey(keyPathVisual, new(RequestedOperation.Edit));
-            SelectPath = key;
+            AddPath(new KeyPathByDrive());
         }
 
         public void UpdateBody(object parameter)
@@ -227,7 +228,7 @@ namespace PassManager.ViewModels
             pathPathVisual.Request += RequesKey;
             Paths.Add(pathPathVisual);
             RequesKey(pathPathVisual, new(RequestedOperation.Edit));
-            SelectPath = target;
+            SelectPath = pathPathVisual;
         }
 
         #endregion //VirtualMethods

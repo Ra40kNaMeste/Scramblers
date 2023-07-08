@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model ="clr-namespace:PassManager.ViewModels"
+             xmlns:con="clr-namespace:PassManager.ViewConverters"
              x:Class="PassManager.Views.KeysView"
              Title="Keys">
     <Grid>
@@ -16,27 +17,34 @@
             <ImageButton Source="update.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding UpdateCommand}"/>
         </StackLayout>
 
-        <StackLayout Grid.Row="1">
-            <ListView ItemsSource="{Binding Paths}" SelectedItem="{Binding SelectPath}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Name}"/>
-                                <HorizontalStackLayout Grid.Column="1">
-                                    <ImageButton Source="remove.png" MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding DeleteCommand}"/>
-                                    <Button Text="..." Command="{Binding EditCommand}"/>
-                                </HorizontalStackLayout>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+        <ListView ItemsSource="{Binding Paths}" SelectedItem="{Binding SelectPath}" Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Name}"/>
+                            <HorizontalStackLayout Grid.Column="1">
+                                <Image MaximumHeightRequest="20" MaximumWidthRequest="20">
+                                    <Image.Source>
+                                        <Binding Path="IsSelect">
+                                            <Binding.Converter>
+                                                <con:SelectPropertyToPathImageConverter/>
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </Image.Source>
+                                </Image>
+                                <ImageButton Source="remove.png" MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding DeleteCommand}"/>
+                                <Button Text="..." Command="{Binding EditCommand}"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
 
     </Grid>
