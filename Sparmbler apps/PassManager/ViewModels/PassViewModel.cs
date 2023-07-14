@@ -47,7 +47,14 @@ namespace PassManager.ViewModels
         private void OnPasswordSourceChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ScramblerManager.PassReader))
-                Open();
+                try
+                {
+                    Open();
+                }
+                catch (Exception)
+                {
+
+                }
         }
 
         private ObservableCollection<PasswordVisualItem> passwords;

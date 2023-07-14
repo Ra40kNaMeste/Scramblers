@@ -96,8 +96,10 @@ namespace PassManager.Model
 
             try
             {
-                var temp = File.ReadAllText(Path.Path).Split('\n');
-                return File.ReadAllText(Path.Path).Split('\n').ToDictionary(i =>i.Split('\t')[0], i => i.Split('\t')[1]);
+                var temp = File.ReadAllText(Path.Path);
+                if(temp.Length > 0)
+                    return temp.Split('\n').ToDictionary(i =>i.Split('\t')[0], i => i.Split('\t')[1]);
+                throw new FileLoadException(Path.Path);
             }
             catch (Exception)
             {

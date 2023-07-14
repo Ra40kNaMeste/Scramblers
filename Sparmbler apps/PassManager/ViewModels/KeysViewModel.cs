@@ -17,13 +17,19 @@ using System.Threading.Tasks;
 
 namespace PassManager.ViewModels
 {
-    public class KeysViewModel : PassPathsViewModel
+    public class KeysViewModel : PathViewModelBase
     {
-        public KeysViewModel(IConfiguration configuration, ScramblerManager manager):base(configuration, manager)
+        public KeysViewModel(IConfiguration configuration, ScramblerManager manager):base(configuration)
         {
+            //Добавление связи с менеджером
+            PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == nameof(SelectPath))
+                    manager.KeyReader = (IKeyPathReader)SelectPath?.TargetKeyPath;
+            };
         }
-
-        public override async void GenerateBodyAsync(object parameter)
+        #region OverrideMethods
+        public override async Task GenerateBody()
         {
             var page = new CreatePassView(Configuration);
             page.Unloaded += (o, e) =>
@@ -37,21 +43,13 @@ namespace PassManager.ViewModels
             await TargetPage.Navigation.PushAsync(page);
         }
 
-        public override PropertyInfo GetTargetPropertyInScramblerManager() => typeof(ScramblerManager).GetProperty(nameof(ScramblerManager.KeyReader));
-
-        protected override void BindingSelectPath(ScramblerManager manager)
-        {
-            PropertyChanged += (o, e) =>
-            {
-                if (e.PropertyName == nameof(SelectPath))
-                    manager.KeyReader = (IKeyPathReader)SelectPath?.TargetKeyPath;
-            };        
-        }
         public override void OpenPathBody(object parameter)
         {
             AddPath(new KeyPathByDrive());
         }
+
         protected override CreatedValueOptions GetViewModelOptions() => new() { FileType = TargetFileType.Key };
-    }    
+        #endregion //OverrideMethods
+    }
 }
 
