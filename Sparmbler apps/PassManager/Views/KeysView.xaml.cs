@@ -1,21 +1,17 @@
 using Microsoft.Extensions.Configuration;
+using PassManager.Model;
 using PassManager.Settings;
 using PassManager.ViewModels;
 namespace PassManager.Views;
 
 public partial class KeysView : ContentPage
 {
-	public KeysView(IConfiguration configuration)
+	public KeysView(KeysViewModel keyVM)
 	{
-		
-        var vm = BindingContext ?? new KeysViewModel(configuration);
+        BindingContext = keyVM;
+        keyVM.TargetPage = this;
 
-		if (vm is PassPathsViewModel model)
-		{
-            model.TargetPage = this;
-        }
-        BindingContext = vm;
         InitializeComponent();
-	}
+    }
 
 }

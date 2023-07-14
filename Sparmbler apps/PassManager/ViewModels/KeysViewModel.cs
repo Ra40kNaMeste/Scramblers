@@ -10,18 +10,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PassManager.ViewModels
 {
-    class KeysViewModel : PassPathsViewModel
+    public class KeysViewModel : PassPathsViewModel
     {
-        public KeysViewModel(IConfiguration configuration):base(configuration)
+        public KeysViewModel(IConfiguration configuration, ScramblerManager manager):base(configuration, manager)
         {
         }
-
 
         public override async void GenerateBodyAsync(object parameter)
         {
@@ -37,10 +37,21 @@ namespace PassManager.ViewModels
             await TargetPage.Navigation.PushAsync(page);
         }
 
-        protected override CreatedValueOptions GetViewModelOptions() => new() { FileType = TargetFileType.Key };
+        public override PropertyInfo GetTargetPropertyInScramblerManager() => typeof(ScramblerManager).GetProperty(nameof(ScramblerManager.KeyReader));
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new(propertyName));
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
+        protected override void BindingSelectPath(ScramblerManager manager)
+        {
+            PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == nameof(SelectPath))
+                    manager.KeyReader = (IKeyPathReader)SelectPath?.TargetKeyPath;
+            };        
+        }
+        public override void OpenPathBody(object parameter)
+        {
+            AddPath(new KeyPathByDrive());
+        }
+        protected override CreatedValueOptions GetViewModelOptions() => new() { FileType = TargetFileType.Key };
+    }    
 }
 

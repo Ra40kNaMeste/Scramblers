@@ -96,6 +96,7 @@ namespace PassManager.Model
 
             try
             {
+                var temp = File.ReadAllText(Path.Path).Split('\n');
                 return File.ReadAllText(Path.Path).Split('\n').ToDictionary(i =>i.Split('\t')[0], i => i.Split('\t')[1]);
             }
             catch (Exception)
@@ -116,7 +117,7 @@ namespace PassManager.Model
                 string str = "";
                 foreach (var item in pass)
                 {
-                    str += $"{0}\t{1}\n";
+                    str += string.Format("{0}\t{1}\n", item.Key.Replace('\t',' '), item.Value.Replace('\t', ' '));
                 }
                 File.WriteAllText(Path.Path, str.Substring(0, str.Length - 1));
             }

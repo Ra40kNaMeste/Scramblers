@@ -10,5 +10,6 @@
     <TabBar>
         <ShellContent Title="{Static res:Resources.KeysTabName}" ContentTemplate="{DataTemplate local:KeysView}"/>
         <ShellContent Title="{Static res:Resources.PassPatchsBarName}" ContentTemplate="{DataTemplate local:PassPathsView}"/>
+        <ShellContent Title="{Static res:Resources.PasswordViewName}" ContentTemplate="{DataTemplate local:PassView}"/>
     </TabBar>
 </Shell>

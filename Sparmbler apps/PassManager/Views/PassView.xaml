@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PassManager.Views.PassView"
+             Title="PassView">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <ListView ItemsSource="{Binding Passwords}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Editor Text="{Binding Name}"/>
+                            <Editor Grid.Column="1" Text="{Binding Key}"/>
+                            <ImageButton Grid.Column="2" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="remove.png" Command="{Binding RemoveCommand}"/>
+                            <ImageButton Grid.Column="3" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="copy.png" Command="{Binding CpyPassToClipboardCommand}"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ImageButton MaximumHeightRequest="20" MaximumWidthRequest="20" Source="add.png" Command="{Binding AddKeyCommand}"/>
+            <ImageButton Grid.Column="1" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="save.png" Command="{Binding SaveCommand}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -13,7 +13,7 @@ namespace PassManager.ViewConverters
     /// <summary>
     /// Прокси, который представляет оболочку над моделью KeyPathReaderBase для визуализации
     /// </summary>
-    internal class PathReaderVisual:INotifyPropertyChanged
+    public class PathReaderVisual:INotifyPropertyChanged
     {
         public PathReaderVisual()
         {
@@ -62,11 +62,11 @@ namespace PassManager.ViewConverters
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
-    internal enum RequestedOperation
+    public enum RequestedOperation
     {
-        Edit, Delete
+        Edit, Delete, Copy
     }
-    internal class RequestedEventArgs
+    public class RequestedEventArgs
     {
         public RequestedEventArgs(RequestedOperation operation)
         {

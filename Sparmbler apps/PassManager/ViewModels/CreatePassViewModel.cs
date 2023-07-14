@@ -65,7 +65,7 @@ namespace PassManager.ViewModels
         public async void SavePasswordBody(object parameter)
         {
             var options = new PickOptions();
-            options.FileTypes = new(VisualOperations.CreatePassFileTypeDictionary(_configuration));
+            options.FileTypes = new(VisualOperations.CreateKeyFileTypeDictionary(_configuration));
             options.PickerTitle = Properties.Resources.SaveFileTitle;
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(Password));
             try

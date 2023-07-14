@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,14 +19,14 @@ using System.Threading.Tasks;
 namespace PassManager.ViewModels
 {
 
-    internal class PassPathsViewModel
-
+    public class PassPathsViewModel
     {
         #region Constructions
-        public PassPathsViewModel(IConfiguration configuration)
+        public PassPathsViewModel(IConfiguration configuration, ScramblerManager manager)
         {
             Configuration = configuration;
             Initialize();
+            BindingSelectPath(manager);
         }
 
         private void Initialize()
@@ -36,6 +37,15 @@ namespace PassManager.ViewModels
             eventManager.Destroying += (o, e) => Save();
             //загрузка открытых паролей
             Open();
+        }
+
+        protected virtual void BindingSelectPath(ScramblerManager manager)
+        {
+            PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == nameof(SelectPath))
+                    manager.PassReader = (PassPathReaderBase)SelectPath?.TargetKeyPath;
+            };
         }
 
         #endregion//Constructions
@@ -117,9 +127,9 @@ namespace PassManager.ViewModels
         }
         protected virtual CreatedValueOptions GetViewModelOptions() => new CreatedValueOptions() { FileType = TargetFileType.Pass };
 
-        public void OpenPathBody(object parameter)
+        public virtual void OpenPathBody(object parameter)
         {
-            AddPath(new KeyPathByDrive());
+            AddPath(new PassPathByDrive());
         }
 
         public void UpdateBody(object parameter)
@@ -218,6 +228,12 @@ namespace PassManager.ViewModels
             }
         }
 
+        public virtual PropertyInfo GetTargetPropertyInScramblerManager() => typeof(ScramblerManager).GetProperty(nameof(ScramblerManager.PassReader));
+
+        #endregion //VirtualMethods
+
+        #region ProtectedMethods
+
         /// <summary>
         /// Добавляет с обёрткой новый элемент
         /// </summary>
@@ -230,8 +246,7 @@ namespace PassManager.ViewModels
             RequesKey(pathPathVisual, new(RequestedOperation.Edit));
             SelectPath = pathPathVisual;
         }
-
-        #endregion //VirtualMethods
+        #endregion //ProtectedMethods
 
         #region PrivateMethods
 

@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace PassManager.Commands
 {
-    internal class OnlyEnabledCommand : ICommand
+    public class OnlyEnabledCommand : ICommand
     {
         public OnlyEnabledCommand(Action<object> command) => _command = command;
 

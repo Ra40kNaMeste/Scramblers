@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PassManager.Model;
+using PassManager.ViewModels;
 using PassManager.Views;
 using System.Reflection;
 
@@ -24,14 +26,34 @@ namespace PassManager
             var config = new ConfigurationBuilder().AddJsonStream(stream).Build();
             builder.Configuration.AddConfiguration(config);
 
-            builder.Services.AddTransient<KeysView>();
-            builder.Services.AddTransient<PassPathsView>();
+            RegisterModels(builder);
+            RegisterViewModels(builder);
+            RegisterViews(builder);
 
 #if DEBUG
-		    builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
+        }
+
+        private static void RegisterModels(MauiAppBuilder builder)
+        {
+            builder.Services.AddSingleton<ScramblerManager>();
+        }
+
+        private static void RegisterViewModels(MauiAppBuilder builder)
+        {
+            builder.Services.AddTransient<KeysViewModel>();
+            builder.Services.AddTransient<PassPathsViewModel>();
+            builder.Services.AddTransient<PassViewModel>();
+        }
+
+        private static void RegisterViews(MauiAppBuilder builder)
+        {
+            builder.Services.AddTransient<KeysView>();
+            builder.Services.AddTransient<PassPathsView>();
+            builder.Services.AddTransient<PassView>();
         }
     }
 }

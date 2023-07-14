@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="KeyDefaultName" xml:space="preserve">
+    <value>Key </value>
+  </data>
   <data name="KeysTabName" xml:space="preserve">
     <value>Keys</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="PassPatchsBarName" xml:space="preserve">
     <value>Pass</value>
+  </data>
+  <data name="PasswordViewName" xml:space="preserve">
+    <value>Passwords</value>
   </data>
   <data name="PathProperty" xml:space="preserve">
     <value>Path</value>
