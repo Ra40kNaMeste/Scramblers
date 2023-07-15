@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PassManager.ViewModels
 {
-    public class PassViewModel:INotifyPropertyChanged
+    public class PassViewModel : INotifyPropertyChanged
     {
         public PassViewModel(ScramblerManager manager, IConfiguration configuration)
         {
@@ -58,7 +58,7 @@ namespace PassManager.ViewModels
         }
 
         private ObservableCollection<PasswordVisualItem> passwords;
-        public ObservableCollection<PasswordVisualItem> Passwords 
+        public ObservableCollection<PasswordVisualItem> Passwords
         {
             get => passwords;
             set
@@ -86,7 +86,7 @@ namespace PassManager.ViewModels
         private void AddKeyBody(object parameter)
         {
             int size = Convert.ToInt32(_configuration.GetRequiredSection("Settings").Get<Settings.Settings>().DefaultSizeKey);
-            Passwords.Add(new() { Name = DefaultValuesGenerator.GenerateKeyName(Passwords.Select(i => i.Name)), Key = DefaultValuesGenerator.GeneratePass(size) });
+            Passwords.Add(new(DefaultValuesGenerator.GenerateKeyName(Passwords.Select(i => i.Name)), DefaultValuesGenerator.GeneratePass(size)));
         }
 
 
@@ -123,11 +123,11 @@ namespace PassManager.ViewModels
             try
             {
                 var temp = await _manager.PassReader.ReadPassAsync();
-                Passwords = new(temp.Select(i => new PasswordVisualItem() { Key = i.Value, Name = i.Key }));
+                Passwords = new(temp.Select(i => new PasswordVisualItem(i.Value, i.Key)));
             }
             catch (Exception)
             {
-                
+
             }
         }
         private async Task CopyPassToClipboardBodyAsync(PasswordVisualItem key)
@@ -157,8 +157,13 @@ namespace PassManager.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
-    public class PasswordVisualItem
+    public class PasswordVisualItem : INotifyPropertyChanged
     {
+        public PasswordVisualItem(string name, string key)
+        {
+            Name = name;
+            Key = key;
+        }
 
         public OnlyEnabledCommand removeCommand;
         public OnlyEnabledCommand RemoveCommand => removeCommand ??= new(RemoveKeyBody);
@@ -173,10 +178,32 @@ namespace PassManager.ViewModels
 
         private void CopyPassToClipboardBody(object parameter) => OnRequest(RequestedOperation.Copy);
 
-        public string Name { get; set; }
-        public string Key { get; set; }
+        private string name;
+        public string Name
+        {
+            get => name;
+            set
+            {
+                name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string key;
+        public string Key
+        {
+            get => key;
+            private set
+            {
+                key = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void OnRequest(RequestedOperation operation) => Request?.Invoke(this, new(operation));
         public event Action<object, RequestedEventArgs> Request;
+
+        private void OnPropertyChanged([CallerMemberName] string property = null) => PropertyChanged?.Invoke(this, new(property));
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
