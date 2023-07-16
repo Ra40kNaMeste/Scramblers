@@ -4,6 +4,7 @@ using PassManager.Commands;
 using PassManager.Model;
 using PassManager.Settings;
 using PassManager.ViewConverters;
+using Scrambler.NetFeistel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,44 +19,95 @@ namespace PassManager.ViewModels
 {
     public class PassViewModel : INotifyPropertyChanged
     {
+        #region Constructions
         public PassViewModel(ScramblerManager manager, IConfiguration configuration)
         {
             _manager = manager;
             _configuration = configuration;
-            manager.PropertyChanged += OnPasswordSourceChanged;
-            Open();
-            Passwords = new();
+            Inizialize();
+        }
+
+        /// <summary>
+        /// Метод инициализации и создания зависимостей.
+        /// </summary>
+        private void Inizialize()
+        {
             PropertyChanged += (o, e) =>
             {
-                if (e.PropertyName == nameof(Passwords))
-                    Passwords.CollectionChanged += (o1, e1) =>
-                    {
-                        foreach (var item in e1.NewItems)
-                        {
-                            if (item is PasswordVisualItem i)
-                                i.Request += HandlePasswordCommandAsync;
-                        }
-                    };
+                AddPasswordsItemsHandler();
+                UpdateCopyPassCommand();
+                UpdateAddCommand();
             };
 
+            Passwords = new();
 
+            _manager.PropertyChanged += (o, e) =>
+            {
+                UpdateCopyPassCommand();
+                UpdateAddCommand();
+                Open();
+            };
+
+            Open();
         }
+
+        /// <summary>
+        /// Метод для связки представлений паролей с ViewModel.
+        /// </summary>
+        private void AddPasswordsItemsHandler()
+        {
+            foreach (var item in Passwords)
+            {
+                if (item is PasswordVisualItem i)
+                    i.Request += HandlePasswordCommandAsync;
+            }
+            Passwords.CollectionChanged += (o1, e1) =>
+            {
+                if (e1.NewItems != null)
+                    foreach (var item in e1.NewItems)
+                    {
+                        if (item is PasswordVisualItem i)
+                            i.Request += HandlePasswordCommandAsync;
+                    }
+                SaveCommand.Enable();
+                UpdateCopyPassCommand();
+            };
+        }
+
+        /// <summary>
+        /// Обновление состояния комманды добавления пароля.
+        /// </summary>
+        private void UpdateAddCommand()
+        {
+            if (_manager.PassReader == null)
+                AddKeyCommand.Disable();
+            else
+                AddKeyCommand.Enable();
+        }
+
+        /// <summary>
+        /// Обновление состояния команды копирования
+        /// </summary>
+        private void UpdateCopyPassCommand()
+        {
+            if (_manager.KeyReader == null)
+                foreach (var pass in Passwords)
+                    pass.CopyPassToClipboardCommand.Disable();
+            else
+                foreach (var pass in Passwords)
+                    pass.CopyPassToClipboardCommand.Enable();
+        }
+
+        #endregion //Constructions
+
+        #region PrivateFields
 
         private ScramblerManager _manager;
         private IConfiguration _configuration;
 
-        private void OnPasswordSourceChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ScramblerManager.PassReader))
-                try
-                {
-                    Open();
-                }
-                catch (Exception)
-                {
+        #endregion //PrivateFields
 
-                }
-        }
+        #region VisualProperties
 
         private ObservableCollection<PasswordVisualItem> passwords;
         public ObservableCollection<PasswordVisualItem> Passwords
@@ -68,16 +120,17 @@ namespace PassManager.ViewModels
             }
         }
 
+        #endregion //VisualProperties
+
         #region Commands
 
         #region CommandHead
 
-        private OnlyEnabledCommand addKeyCommand;
-        public OnlyEnabledCommand AddKeyCommand => addKeyCommand ??= new(AddKeyBody);
+        private CommandWithEnableMethod addKeyCommand;
+        public CommandWithEnableMethod AddKeyCommand => addKeyCommand ??= new(AddKeyBody, false);
 
-        private OnlyEnabledCommand saveCommand;
-        public OnlyEnabledCommand SaveCommand => saveCommand ??= new(SaveBody);
-
+        private CommandWithEnableMethod saveCommand;
+        public CommandWithEnableMethod SaveCommand => saveCommand ??= new(SaveBody);
 
         #endregion //CommandHead
 
@@ -124,6 +177,7 @@ namespace PassManager.ViewModels
             {
                 var temp = await _manager.PassReader.ReadPassAsync();
                 Passwords = new(temp.Select(i => new PasswordVisualItem(i.Value, i.Key)));
+                SaveCommand.Disable();
             }
             catch (Exception)
             {
@@ -132,19 +186,33 @@ namespace PassManager.ViewModels
         }
         private async Task CopyPassToClipboardBodyAsync(PasswordVisualItem key)
         {
-            var scrambler = _manager.Algorithm;
-            using MemoryStream ms = new(Encoding.UTF8.GetBytes(key.Key));
-            using MemoryStream res = new MemoryStream();
-            using CryptoStream cs = new(ms, scrambler.CreateEncryptor(), CryptoStreamMode.Write);
-            byte[] buffer = new byte[1024];
-            while (cs.Read(buffer) != 0)
+            try
             {
-                res.Write(buffer);
+                using var scrambler = new Twofish();
+                scrambler.BlockSize = 128;
+                scrambler.KeySize = 256;
+
+                scrambler.SetKey(Encoding.UTF8.GetBytes(_manager.KeyReader.ReadKey()));
+
+                using MemoryStream ms = new(Encoding.UTF8.GetBytes(key.Key));
+                using MemoryStream res = new MemoryStream();
+                using CryptoStream cs = new(ms, scrambler.CreateEncryptor(), CryptoStreamMode.Read);
+                byte[] buffer = new byte[1024];
+                while (cs.Read(buffer) != 0)
+                {
+                    res.Write(buffer);
+                }
+                await Clipboard.Default.SetTextAsync(Encoding.UTF8.GetString(res.GetBuffer()));
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    buffer[i] = 0;
+                }
+
             }
-            await Clipboard.Default.SetTextAsync(BitConverter.ToString(res.GetBuffer()));
-            for (int i = 0; i < buffer.Length; i++)
+            catch (Exception ex)
             {
-                buffer[i] = 0;
+
+                throw;
             }
 
         }
@@ -168,8 +236,8 @@ namespace PassManager.ViewModels
         public OnlyEnabledCommand removeCommand;
         public OnlyEnabledCommand RemoveCommand => removeCommand ??= new(RemoveKeyBody);
 
-        private OnlyEnabledCommand copyPassToClipboardCommand;
-        public OnlyEnabledCommand CopyPassToClipboardCommand => copyPassToClipboardCommand ??= new(CopyPassToClipboardBody);
+        private CommandWithEnableMethod copyPassToClipboardCommand;
+        public CommandWithEnableMethod CopyPassToClipboardCommand => copyPassToClipboardCommand ??= new(CopyPassToClipboardBody, false);
 
         private void RemoveKeyBody(object parameter)
         {

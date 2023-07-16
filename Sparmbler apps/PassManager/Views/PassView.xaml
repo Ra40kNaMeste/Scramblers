@@ -24,7 +24,7 @@
                             <Editor Text="{Binding Name}"/>
                             <Label Grid.Column="1" Text="{Binding Key, Converter={con:PasswordViewConverter}}"/>
                             <ImageButton Grid.Column="2" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="remove.png" Command="{Binding RemoveCommand}"/>
-                            <ImageButton Grid.Column="3" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="copy.png" Command="{Binding CpyPassToClipboardCommand}"/>
+                            <ImageButton Grid.Column="3" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="copy.png" Command="{Binding CopyPassToClipboardCommand}"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
