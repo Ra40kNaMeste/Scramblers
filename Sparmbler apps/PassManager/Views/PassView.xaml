@@ -20,11 +20,13 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Editor Text="{Binding Name}"/>
                             <Label Grid.Column="1" Text="{Binding Key, Converter={con:PasswordViewConverter}}"/>
-                            <ImageButton Grid.Column="2" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="remove.png" Command="{Binding RemoveCommand}"/>
-                            <ImageButton Grid.Column="3" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="copy.png" Command="{Binding CopyPassToClipboardCommand}"/>
+                            <ImageButton Grid.Column="2" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="copy.png" Command="{Binding CopyPassToClipboardCommand}"/>
+                            <ImageButton Grid.Column="3" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="genpass.png" Command="{Binding GeneratePasswordCommand}"/>
+                            <ImageButton Grid.Column="4" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="remove.png" Command="{Binding RemoveCommand}"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

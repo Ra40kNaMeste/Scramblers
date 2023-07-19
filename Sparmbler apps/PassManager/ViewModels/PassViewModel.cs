@@ -20,11 +20,12 @@ namespace PassManager.ViewModels
     public class PassViewModel : INotifyPropertyChanged
     {
         #region Constructions
-        public PassViewModel(ScramblerManager manager, IConfiguration configuration)
+        public PassViewModel(ScramblerManager manager, IConfiguration configuration, PasswordGenerator passGenerator)
         {
             _manager = manager;
             _configuration = configuration;
             Inizialize();
+            _passGenerator = passGenerator;
         }
 
         /// <summary>
@@ -104,6 +105,7 @@ namespace PassManager.ViewModels
 
         private ScramblerManager _manager;
         private IConfiguration _configuration;
+        private PasswordGenerator _passGenerator;
 
         #endregion //PrivateFields
 
@@ -138,15 +140,23 @@ namespace PassManager.ViewModels
 
         private void AddKeyBody(object parameter)
         {
-            int size = Convert.ToInt32(_configuration.GetRequiredSection("Settings").Get<Settings.Settings>().DefaultSizeKey);
-            Passwords.Add(new(DefaultValuesGenerator.GenerateKeyName(Passwords.Select(i => i.Name)), DefaultValuesGenerator.GeneratePass(size)));
+
+            Passwords.Add(new(DefaultValuesGenerator.GenerateKeyName(Passwords.Select(i => i.Name)), 
+                Encoding.UTF8.GetBytes(_passGenerator.GenerateString())));
         }
 
 
 
         private async void SaveBody(object parameter)
         {
-            await _manager.PassReader.WritePassAsync(Passwords.ToDictionary(i => i.Name, i => i.Key));
+            try
+            {
+                await _manager.PassReader.WritePassAsync(Passwords.ToDictionary(i => i.Name, i => i.Key));
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private async void HandlePasswordCommandAsync(object sender, RequestedEventArgs e)
@@ -156,12 +166,17 @@ namespace PassManager.ViewModels
             {
                 case RequestedOperation.Delete:
                     RemoveKeyBody(password);
+                    SaveCommand.Enable();
                     break;
                 case RequestedOperation.Copy:
                     await CopyPassToClipboardBodyAsync(password);
                     break;
-                default:
+                case RequestedOperation.Edit:
+                    GeneratePassword(password);
+                    SaveCommand.Enable();
                     break;
+                default:
+                    return;
             }
         }
         private void RemoveKeyBody(PasswordVisualItem key)
@@ -176,7 +191,7 @@ namespace PassManager.ViewModels
             try
             {
                 var temp = await _manager.PassReader.ReadPassAsync();
-                Passwords = new(temp.Select(i => new PasswordVisualItem(i.Value, i.Key)));
+                Passwords = new(temp.Select(i => new PasswordVisualItem(i.Key, i.Value)));
                 SaveCommand.Disable();
             }
             catch (Exception)
@@ -194,15 +209,21 @@ namespace PassManager.ViewModels
 
                 scrambler.SetKey(Encoding.UTF8.GetBytes(_manager.KeyReader.ReadKey()));
 
-                using MemoryStream ms = new(Encoding.UTF8.GetBytes(key.Key));
+                using MemoryStream ms = new(key.Key);
                 using MemoryStream res = new MemoryStream();
-                using CryptoStream cs = new(ms, scrambler.CreateEncryptor(), CryptoStreamMode.Read);
+                using CryptoStream cs = new(ms, scrambler.CreateDecryptor(), CryptoStreamMode.Read);
                 byte[] buffer = new byte[1024];
-                while (cs.Read(buffer) != 0)
+                int size;
+                while ((size = cs.Read(buffer, 0 ,1024)) != 0)
                 {
-                    res.Write(buffer);
+                    res.Write(buffer, 0, size);
                 }
-                await Clipboard.Default.SetTextAsync(Encoding.UTF8.GetString(res.GetBuffer()));
+                cs.Flush();
+                var tt = res.GetBuffer();
+                string t = Encoding.UTF8.GetString(res.GetBuffer().ToArray().Reverse().SkipWhile(i => i == 0).Reverse().ToArray());
+
+                await Clipboard.Default.SetTextAsync(t);
+
                 for (int i = 0; i < buffer.Length; i++)
                 {
                     buffer[i] = 0;
@@ -217,6 +238,28 @@ namespace PassManager.ViewModels
 
         }
 
+        private void GeneratePassword(PasswordVisualItem item)
+        {
+            using var scrambler = new Twofish();
+            scrambler.BlockSize = 128;
+            scrambler.KeySize = 256;
+
+            scrambler.SetKey(Encoding.UTF8.GetBytes(_manager.KeyReader.ReadKey()));
+
+            var passBuffer = Encoding.UTF8.GetBytes(_passGenerator.GenerateString());
+            using MemoryStream ms = new(passBuffer);
+
+            int sizeRes = ((passBuffer.Length - 1) / 16 + 1) * 16;
+            byte[] resBuffer = new byte[sizeRes];
+            using MemoryStream res = new MemoryStream(resBuffer);
+            using CryptoStream cs = new(res, scrambler.CreateEncryptor(), CryptoStreamMode.Write);
+
+            cs.Write(passBuffer, 0, passBuffer.Length);
+            cs.FlushFinalBlock();
+
+            item.Key = resBuffer;
+        }
+
         #endregion //Command body
 
         #endregion //Commands
@@ -227,9 +270,12 @@ namespace PassManager.ViewModels
 
     public class PasswordVisualItem : INotifyPropertyChanged
     {
-        public PasswordVisualItem(string name, string key)
+        public PasswordVisualItem(string name)
         {
             Name = name;
+        }
+        public PasswordVisualItem(string name, byte[] key):this(name)
+        {
             Key = key;
         }
 
@@ -238,6 +284,9 @@ namespace PassManager.ViewModels
 
         private CommandWithEnableMethod copyPassToClipboardCommand;
         public CommandWithEnableMethod CopyPassToClipboardCommand => copyPassToClipboardCommand ??= new(CopyPassToClipboardBody, false);
+
+        private OnlyEnabledCommand generatePasswordCommand;
+        public OnlyEnabledCommand GeneratePasswordCommand => generatePasswordCommand ??= new(GeneratePasswordBody);
 
         private void RemoveKeyBody(object parameter)
         {
@@ -257,15 +306,22 @@ namespace PassManager.ViewModels
             }
         }
 
-        private string key;
-        public string Key
+
+
+        private byte[] key;
+        public byte[] Key
         {
             get => key;
-            private set
+            set
             {
                 key = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void GeneratePasswordBody(object parameter)
+        {
+            OnRequest(RequestedOperation.Edit);
         }
 
         private void OnRequest(RequestedOperation operation) => Request?.Invoke(this, new(operation));

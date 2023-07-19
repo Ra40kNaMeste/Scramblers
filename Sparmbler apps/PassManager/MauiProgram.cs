@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PassManager.Model;
 using PassManager.ViewModels;
@@ -40,6 +41,9 @@ namespace PassManager
         private static void RegisterModels(MauiAppBuilder builder)
         {
             builder.Services.AddSingleton<ScramblerManager>();
+            builder.Services.AddSingleton<PasswordGenerator>(new PasswordGenerator() { 
+                Size = Convert.ToInt32(builder.Configuration.GetRequiredSection("Settings").Get<Settings.Settings>().DefaultSizeKey) 
+            });
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)
