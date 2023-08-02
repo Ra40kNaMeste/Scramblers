@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:con="clr-namespace:PassManager.ViewConverters"
+             xmlns:res="clr-namespace:PassManager.Properties"
              x:Class="PassManager.Views.PassPathsView"
-             Title="PassPathsView">
+             Title="{Static res:Resources.PassPatchsBarName}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -11,9 +12,9 @@
         </Grid.RowDefinitions>
 
         <StackLayout Orientation="Horizontal">
-            <ImageButton Source="add.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding GenerateCommand}"/>
-            <ImageButton Source="open.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding OpenPathCommand}"/>
-            <ImageButton Source="update.png" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding UpdateCommand}"/>
+            <ImageButton Source="{AppThemeBinding Dark=add_dark.png, Light=add_light.png}" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding GenerateCommand}"/>
+            <ImageButton Source="{AppThemeBinding Dark=open_dark.png, Light=open_light.png}" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding OpenPathCommand}"/>
+            <ImageButton Source="{AppThemeBinding Dark=update_dark.png, Light=update_light.png}" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding UpdateCommand}"/>
         </StackLayout>
 
         <ListView Grid.Row="1" ItemsSource="{Binding Paths}" SelectedItem="{Binding SelectPath}">
@@ -36,7 +37,7 @@
                                         </Binding>
                                     </Image.Source>
                                 </Image>
-                                <ImageButton Source="remove.png" MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding DeleteCommand}"/>
+                                <ImageButton Source="{AppThemeBinding Dark=remove_dark.png, Light=remove_light.png}" MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding DeleteCommand}"/>
                                 <Button Text="..." Command="{Binding EditCommand}"/>
                             </HorizontalStackLayout>
                         </Grid>

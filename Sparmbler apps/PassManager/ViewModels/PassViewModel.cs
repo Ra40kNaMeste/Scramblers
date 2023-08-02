@@ -20,10 +20,9 @@ namespace PassManager.ViewModels
     public class PassViewModel : INotifyPropertyChanged
     {
         #region Constructions
-        public PassViewModel(ScramblerManager manager, IConfiguration configuration, PasswordGenerator passGenerator)
+        public PassViewModel(ScramblerManager manager, PasswordGenerator passGenerator)
         {
             _manager = manager;
-            _configuration = configuration;
             Inizialize();
             _passGenerator = passGenerator;
         }
@@ -104,7 +103,6 @@ namespace PassManager.ViewModels
         #region PrivateFields
 
         private ScramblerManager _manager;
-        private IConfiguration _configuration;
         private PasswordGenerator _passGenerator;
 
         #endregion //PrivateFields

@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:con="clr-namespace:PassManager.ViewConverters"
+             xmlns:res="clr-namespace:PassManager.Properties"
              x:Class="PassManager.Views.PassView"
-             Title="PassView">
+             Title="{Static res:Resources.PasswordViewName}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -24,9 +25,9 @@
                             </Grid.ColumnDefinitions>
                             <Editor Text="{Binding Name}"/>
                             <Label Grid.Column="1" Text="{Binding Key, Converter={con:PasswordViewConverter}}"/>
-                            <ImageButton Grid.Column="2" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="copy.png" Command="{Binding CopyPassToClipboardCommand}"/>
-                            <ImageButton Grid.Column="3" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="genpass.png" Command="{Binding GeneratePasswordCommand}"/>
-                            <ImageButton Grid.Column="4" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="remove.png" Command="{Binding RemoveCommand}"/>
+                            <ImageButton Grid.Column="2" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="{AppThemeBinding Dark=copy_dark.png, Light=copy_light.png}" Command="{Binding CopyPassToClipboardCommand}"/>
+                            <ImageButton Grid.Column="3" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="{AppThemeBinding Dark=genpass_dark.png, Light=genpass_light.png}" Command="{Binding GeneratePasswordCommand}"/>
+                            <ImageButton Grid.Column="4" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="{AppThemeBinding Dark=remove_dark.png, Light=remove_light.png}" Command="{Binding RemoveCommand}"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
@@ -38,8 +39,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ImageButton MaximumHeightRequest="20" MaximumWidthRequest="20" Source="add.png" Command="{Binding AddKeyCommand}"/>
-            <ImageButton Grid.Column="1" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="save.png" Command="{Binding SaveCommand}"/>
+            <ImageButton MaximumHeightRequest="20" MaximumWidthRequest="20" Source="{AppThemeBinding Dark=add_dark.png, Light=add_light.png}" Command="{Binding AddKeyCommand}"/>
+            <ImageButton Grid.Column="1" MaximumHeightRequest="20" MaximumWidthRequest="20" Source="{AppThemeBinding Dark=save_dark.png, Light=save_light.png}" Command="{Binding SaveCommand}"/>
         </Grid>
     </Grid>
 </ContentPage>

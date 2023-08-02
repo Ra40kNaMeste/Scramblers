@@ -48,6 +48,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Resources\Images\Dark\**" />
+	  <AndroidResource Remove="Resources\Images\Light\**" />
+	  <Compile Remove="Resources\Images\Dark\**" />
+	  <Compile Remove="Resources\Images\Light\**" />
+	  <EmbeddedResource Remove="Resources\Images\Dark\**" />
+	  <EmbeddedResource Remove="Resources\Images\Light\**" />
+	  <MauiCss Remove="Resources\Images\Dark\**" />
+	  <MauiCss Remove="Resources\Images\Light\**" />
+	  <MauiImage Remove="Resources\Images\Dark\**" />
+	  <MauiImage Remove="Resources\Images\Light\**" />
+	  <MauiXaml Remove="Resources\Images\Dark\**" />
+	  <MauiXaml Remove="Resources\Images\Light\**" />
+	  <None Remove="Resources\Images\Dark\**" />
+	  <None Remove="Resources\Images\Light\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	</ItemGroup>
 
