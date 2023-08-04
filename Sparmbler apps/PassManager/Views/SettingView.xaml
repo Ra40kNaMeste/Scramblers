@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:con="clr-namespace:PassManager.ViewConverters"
+             xmlns:res="clr-namespace:PassManager.Properties"
+             x:Class="PassManager.Views.SettingView"
+             Title="{Static res:Resources.SettingTabName}">
+    <VerticalStackLayout MaximumWidthRequest="400" HorizontalOptions="Start">
+        <Label Text="{Static res:Resources.GeneralSettingName}"/>
+        <Picker ItemsSource="{Binding AppThemes}" SelectedItem="{Binding AppTheme, Mode=TwoWay}">
+            <Picker.ItemDisplayBinding>
+                <Binding>
+                    <Binding.Converter>
+                        <con:AppThemeConverter/>
+                    </Binding.Converter>
+                </Binding>
+            </Picker.ItemDisplayBinding>
+        </Picker>
+        <Picker ItemsSource="{Binding Languages}" SelectedItem="{Binding Language, Mode=TwoWay}">
+            <Picker.ItemDisplayBinding>
+                <Binding>
+                    <Binding.Converter>
+                        <con:LanguageConverter/>
+                    </Binding.Converter>
+                </Binding>
+            </Picker.ItemDisplayBinding>
+        </Picker>
+
+        <Label Text="{Static res:Resources.GeneratePasswordSettingName}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding PasswordGenerationSize}" HorizontalOptions="Start"/>
+            <Stepper Grid.Column="1" HorizontalOptions="End" Minimum="1" Maximum="100" Increment="1" Value="{Binding PasswordGenerationSize, Mode=TwoWay}" VerticalOptions="Start"/>
+        </Grid>
+        <Label Text="{Static res:Resources.GenerateSymbolsName}"/>
+
+        <CollectionView ItemsSource="{Binding GenerateModes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label>
+                            <Label.Text>
+                                <Binding Path="Mode">
+                                    <Binding.Converter>
+                                        <con:GenerateModeConverter/>
+                                    </Binding.Converter>
+                                </Binding>
+                            </Label.Text>
+                        </Label>
+                        <Switch IsToggled="{Binding IsEnable, Mode=TwoWay}"  Grid.Column="1" HorizontalOptions="End"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

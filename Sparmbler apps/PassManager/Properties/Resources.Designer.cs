@@ -61,6 +61,114 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Dark.
+        /// </summary>
+        internal static string DarkThemeName {
+            get {
+                return ResourceManager.GetString("DarkThemeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на English.
+        /// </summary>
+        internal static string EnglishName {
+            get {
+                return ResourceManager.GetString("EnglishName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на General.
+        /// </summary>
+        internal static string GeneralSettingName {
+            get {
+                return ResourceManager.GetString("GeneralSettingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на All.
+        /// </summary>
+        internal static string GenerateModeAllName {
+            get {
+                return ResourceManager.GetString("GenerateModeAllName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Capital chars.
+        /// </summary>
+        internal static string GenerateModeCapitalCharsName {
+            get {
+                return ResourceManager.GetString("GenerateModeCapitalCharsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Lower chars.
+        /// </summary>
+        internal static string GenerateModeLowercaseCharsName {
+            get {
+                return ResourceManager.GetString("GenerateModeLowercaseCharsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на None.
+        /// </summary>
+        internal static string GenerateModeNoneName {
+            get {
+                return ResourceManager.GetString("GenerateModeNoneName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Numbers.
+        /// </summary>
+        internal static string GenerateModeNumberCharsName {
+            get {
+                return ResourceManager.GetString("GenerateModeNumberCharsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Special symbols.
+        /// </summary>
+        internal static string GenerateModeSpecialSymbolsName {
+            get {
+                return ResourceManager.GetString("GenerateModeSpecialSymbolsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Upper chars.
+        /// </summary>
+        internal static string GenerateModeUppercaseCharsName {
+            get {
+                return ResourceManager.GetString("GenerateModeUppercaseCharsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Generate password.
+        /// </summary>
+        internal static string GeneratePasswordSettingName {
+            get {
+                return ResourceManager.GetString("GeneratePasswordSettingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Generate from symbols.
+        /// </summary>
+        internal static string GenerateSymbolsName {
+            get {
+                return ResourceManager.GetString("GenerateSymbolsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Key .
         /// </summary>
         internal static string KeyDefaultName {
@@ -75,6 +183,15 @@ namespace PassManager.Properties {
         internal static string KeysTabName {
             get {
                 return ResourceManager.GetString("KeysTabName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Light.
+        /// </summary>
+        internal static string LightThemeName {
+            get {
+                return ResourceManager.GetString("LightThemeName", resourceCulture);
             }
         }
         
@@ -156,6 +273,24 @@ namespace PassManager.Properties {
         internal static string SelectFileTitle {
             get {
                 return ResourceManager.GetString("SelectFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Setting.
+        /// </summary>
+        internal static string SettingTabName {
+            get {
+                return ResourceManager.GetString("SettingTabName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unspecified.
+        /// </summary>
+        internal static string UnspecifiedThemeName {
+            get {
+                return ResourceManager.GetString("UnspecifiedThemeName", resourceCulture);
             }
         }
     }

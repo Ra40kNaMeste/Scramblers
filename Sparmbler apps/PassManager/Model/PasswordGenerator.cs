@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PassManager.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,24 +7,34 @@ using System.Threading.Tasks;
 
 namespace PassManager.Model
 {
-
+    public enum PasswordGenerateMode
+    {
+        None = 0,
+        CapitalChars = 1,
+        UppercaseChars = 2,
+        NumberChars = 4,
+        SpecialSymbol = 8,
+        All
+    }
     public class PasswordGenerator
     {
         public PasswordGenerator()
         {
-            FillGenerators();
+            FillGenerators(PasswordGenerateMode.All);
         }
 
-        private void FillGenerators()
+        public void FillGenerators(PasswordGenerateMode mode)
         {
-            Generators = new List<PasswordGeneratorItem>()
-            {
-                new PasswordGeneratorItem(new CapitalChars()),
-                new PasswordGeneratorItem(new UppercaseChars()),
-                new PasswordGeneratorItem(new NumberChars()),
-                new PasswordGeneratorItem(new SpecialSymbols())
-            };
+            Generators = _generateItems.Where(i => (i.Key & mode) != 0).Select(i => i.Value);
         }
+        private Dictionary<PasswordGenerateMode, PasswordGeneratorItem> _generateItems = new()
+        {
+             { PasswordGenerateMode.CapitalChars, new(new CapitalChars()) },
+             { PasswordGenerateMode.UppercaseChars, new(new UppercaseChars()) },
+             { PasswordGenerateMode.NumberChars, new(new NumberChars()) },
+             { PasswordGenerateMode.SpecialSymbol, new(new SpecialSymbols()) },
+        };
+
         public IEnumerable<PasswordGeneratorItem> Generators { get; private set; }
         public int Size { get; set; }
         public string GenerateString()

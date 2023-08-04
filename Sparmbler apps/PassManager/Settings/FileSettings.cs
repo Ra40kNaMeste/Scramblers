@@ -20,6 +20,5 @@ namespace PassManager.Settings
     internal class Settings
     {
         public string DataFolder { get; set; }
-        public string DefaultSizeKey { get; set; }
     }
 }

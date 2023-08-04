@@ -96,6 +96,9 @@
 	  <Compile Update="Views\KeysView.xaml.cs">
 	    <DependentUpon>KeysView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\SettingView.xaml.cs">
+	    <DependentUpon>SettingView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -122,6 +125,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PassView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SettingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

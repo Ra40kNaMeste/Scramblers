@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PassManager.Model;
+using PassManager.Settings;
 using PassManager.ViewModels;
 using PassManager.Views;
 using System.Reflection;
@@ -41,9 +42,10 @@ namespace PassManager
         private static void RegisterModels(MauiAppBuilder builder)
         {
             builder.Services.AddSingleton<ScramblerManager>();
-            builder.Services.AddSingleton<PasswordGenerator>(new PasswordGenerator() { 
-                Size = Convert.ToInt32(builder.Configuration.GetRequiredSection("Settings").Get<Settings.Settings>().DefaultSizeKey) 
-            });
+            PasswordGenerator generator = new();
+            builder.Services.AddSingleton(generator);
+            UserSettings settings = new(generator);
+            builder.Services.AddSingleton(settings);
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)
@@ -51,6 +53,7 @@ namespace PassManager
             builder.Services.AddTransient<KeysViewModel>();
             builder.Services.AddTransient<PassPathsViewModel>();
             builder.Services.AddTransient<PassViewModel>();
+            builder.Services.AddTransient<SettingViewModel>();
         }
 
         private static void RegisterViews(MauiAppBuilder builder)
@@ -58,6 +61,7 @@ namespace PassManager
             builder.Services.AddTransient<KeysView>();
             builder.Services.AddTransient<PassPathsView>();
             builder.Services.AddTransient<PassView>();
+            builder.Services.AddTransient<SettingView>();
         }
     }
 }
