@@ -22,14 +22,14 @@ namespace PassManager.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class Resourcesюкг {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resourcesюкг() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PassManager.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PassManager.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PassManager.Properties.Resourcesюкг", typeof(Resourcesюкг).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -228,15 +228,6 @@ namespace PassManager.Properties {
         internal static string PathProperty {
             get {
                 return ResourceManager.GetString("PathProperty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Russian.
-        /// </summary>
-        internal static string RussianName {
-            get {
-                return ResourceManager.GetString("RussianName", resourceCulture);
             }
         }
         

@@ -32,7 +32,8 @@ namespace PassManager.ViewConverters
     {
         private static Dictionary<string, string> _languages = new()
         {
-            {"en-EN", Properties.Resources.EnglishName }
+            {"en-EN", Properties.Resources.EnglishName },
+            {"ru-RU", Properties.Resources.RussianName }
         };
 
         internal static IEnumerable<string> GetLanguages() => _languages.Keys;
