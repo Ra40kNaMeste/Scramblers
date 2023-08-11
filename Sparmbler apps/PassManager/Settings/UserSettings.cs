@@ -13,7 +13,7 @@ namespace PassManager.Settings
 
     class UserSettings
     {
-        public UserSettings(PasswordGenerator generator, ILogger logger = null) 
+        public UserSettings(PasswordGenerator generator, ILogger logger = null)
         {
             _generator = generator;
             _logger = logger;
@@ -21,7 +21,7 @@ namespace PassManager.Settings
 
         private PasswordGenerator _generator;
         private ILogger _logger;
-        public AppTheme Theme 
+        public AppTheme Theme
         {
             get => Enum.Parse<AppTheme>(Preferences.Get("Theme", AppTheme.Unspecified.ToString()));
             set
@@ -30,7 +30,7 @@ namespace PassManager.Settings
                 Preferences.Set("Theme", value.ToString());
             }
         }
-        public int PasswordSize 
+        public int PasswordSize
         {
             get => Preferences.Get("PasswordSize", 10);
             set
@@ -39,7 +39,7 @@ namespace PassManager.Settings
                 Preferences.Set("PasswordSize", value);
             }
         }
-        public PasswordGenerateMode PasswordGenerateMode 
+        public PasswordGenerateMode PasswordGenerateMode
         {
             get => Enum.Parse<PasswordGenerateMode>(Preferences.Get("PasswordGenerateMode", PasswordGenerateMode.All.ToString()));
             set
@@ -48,7 +48,7 @@ namespace PassManager.Settings
                 Preferences.Set("PasswordGenerateMode", value.ToString());
             }
         }
-        public string Language 
+        public string Language
         {
             get => Preferences.Get("Language", "en-EN");
             set
@@ -56,8 +56,15 @@ namespace PassManager.Settings
                 try
                 {
                     System.Globalization.CultureInfo.CurrentCulture = new(value);
+                    Thread.CurrentThread.CurrentCulture = new(value);
+                    Thread.CurrentThread.CurrentUICulture = new(value);
+                    if (value != Language) 
+                    { 
+                        (App.Current as App).MainPage = new AppShell();
+                    }
                     Preferences.Set("Language", value);
                 }
+
                 catch (Exception)
                 {
                     _logger.LogWarning(string.Format($"Failed convert {0}. Unknow value {1}", nameof(Language), value));

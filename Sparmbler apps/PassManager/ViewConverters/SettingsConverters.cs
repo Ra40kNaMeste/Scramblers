@@ -10,14 +10,16 @@ namespace PassManager.ViewConverters
 {
     public class AppThemeConverter : IValueConverter
     {
-        private static Dictionary<AppTheme, string> _themes = new()
+        private Dictionary<AppTheme, string> _themes = GetDictionaryThemes();
+
+        private static Dictionary<AppTheme, string> GetDictionaryThemes()=> new()
         {
             { AppTheme.Unspecified, Properties.Resources.UnspecifiedThemeName },
             { AppTheme.Light, Properties.Resources.LightThemeName },
             { AppTheme.Dark, Properties.Resources.DarkThemeName },
         };
 
-        internal static IEnumerable<AppTheme> GetThemes() => _themes.Keys;
+        internal static IEnumerable<AppTheme> GetThemes() => GetDictionaryThemes().Keys;
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return _themes[(AppTheme)value];
@@ -51,7 +53,7 @@ namespace PassManager.ViewConverters
 
     public class GenerateModeConverter : IValueConverter
     {
-        private static Dictionary<PasswordGenerateMode, string> _modes = new()
+        private Dictionary<PasswordGenerateMode, string> _modes = new()
         {
             { PasswordGenerateMode.None, Properties.Resources.GenerateModeNoneName },
             { PasswordGenerateMode.NumberChars, Properties.Resources.GenerateModeNumberCharsName },
@@ -60,7 +62,6 @@ namespace PassManager.ViewConverters
             { PasswordGenerateMode.CapitalChars, Properties.Resources.GenerateModeCapitalCharsName },
             { PasswordGenerateMode.SpecialSymbol, Properties.Resources.GenerateModeSpecialSymbolsName }
         };
-
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

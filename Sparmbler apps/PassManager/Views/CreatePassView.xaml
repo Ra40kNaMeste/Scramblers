@@ -13,7 +13,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Label Text="{Binding Password}"/>
-        <ImageButton Grid.Column="1" Source="{AppThemeBinding Dark=update_dark.png, Light=update_light.png}" MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding GeneratePassCommand}"/>
-        <ImageButton Grid.Column="2" Source="{AppThemeBinding Dark=save_dark.png, Light=save_light.png}"  MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding SavePasswordCommand}"/>
+        <ImageButton Grid.Column="1" Source="{AppThemeBinding Dark=update_dark.png, Light=update_light.png}" Command="{Binding GeneratePassCommand}"/>
+        <ImageButton Grid.Column="2" Source="{AppThemeBinding Dark=save_dark.png, Light=save_light.png}" Command="{Binding SavePasswordCommand}"/>
     </Grid>
 </ContentPage>

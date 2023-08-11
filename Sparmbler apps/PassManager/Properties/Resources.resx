@@ -181,10 +181,10 @@
     <value>Safe file</value>
   </data>
   <data name="SavePassDefaultFolder" xml:space="preserve">
-    <value>pass.ps</value>
+    <value>pass.bin</value>
   </data>
   <data name="SavePassDefaultName" xml:space="preserve">
-    <value>password.ps</value>
+    <value>password.bin</value>
   </data>
   <data name="SavePathDefaultName" xml:space="preserve">
     <value>pass.mps</value>

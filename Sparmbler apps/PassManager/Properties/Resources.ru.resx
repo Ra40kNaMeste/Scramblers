@@ -178,10 +178,10 @@
     <value>Сохранить</value>
   </data>
   <data name="SavePassDefaultFolder" xml:space="preserve">
-    <value>пароль.ps</value>
+    <value>пароль.bin</value>
   </data>
   <data name="SavePassDefaultName" xml:space="preserve">
-    <value>пароль.ps</value>
+    <value>пароль.bin</value>
   </data>
   <data name="SavePathDefaultName" xml:space="preserve">
     <value>пароль.mps</value>

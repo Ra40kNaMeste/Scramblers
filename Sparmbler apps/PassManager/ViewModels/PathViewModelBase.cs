@@ -117,7 +117,7 @@ namespace PassManager.ViewModels
             }
         }
 
-        public void UpdateBody(object parameter)
+        private void UpdateBody(object parameter)
         {
             foreach (var key in Paths)
             {
@@ -189,7 +189,7 @@ namespace PassManager.ViewModels
             }
         }
 
-        public async void GenerateBodyAsync(object parameter) => await GenerateBody();
+        private async void GenerateBodyAsync(object parameter) => await GenerateBody();
 
         #endregion //BodyCommand
 

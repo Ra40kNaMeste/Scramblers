@@ -250,7 +250,7 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на pass.ps.
+        ///   Ищет локализованную строку, похожую на pass.bin.
         /// </summary>
         internal static string SavePassDefaultFolder {
             get {
@@ -259,7 +259,7 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на password.ps.
+        ///   Ищет локализованную строку, похожую на password.bin.
         /// </summary>
         internal static string SavePassDefaultName {
             get {

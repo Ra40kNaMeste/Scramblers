@@ -12,9 +12,9 @@
         </Grid.RowDefinitions>
 
         <StackLayout Orientation="Horizontal">
-            <ImageButton Source="{AppThemeBinding Dark=add_dark.png, Light=add_light.png}" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding GenerateCommand}"/>
-            <ImageButton Source="{AppThemeBinding Dark=open_dark.png, Light=open_light.png}" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding OpenPathCommand}"/>
-            <ImageButton Source="{AppThemeBinding Dark=update_dark.png, Light=update_light.png}" MaximumHeightRequest="10" MaximumWidthRequest="10" Command="{Binding UpdateCommand}"/>
+            <ImageButton Source="{AppThemeBinding Dark=add_dark.png, Light=add_light.png}" Command="{Binding GenerateCommand}"/>
+            <ImageButton Source="{AppThemeBinding Dark=open_dark.png, Light=open_light.png}" Command="{Binding OpenPathCommand}"/>
+            <ImageButton Source="{AppThemeBinding Dark=update_dark.png, Light=update_light.png}" Command="{Binding UpdateCommand}"/>
         </StackLayout>
 
         <ListView Grid.Row="1" ItemsSource="{Binding Paths}" SelectedItem="{Binding SelectPath}">
@@ -37,7 +37,7 @@
                                         </Binding>
                                     </Image.Source>
                                 </Image>
-                                <ImageButton Source="{AppThemeBinding Dark=remove_dark.png, Light=remove_light.png}" MaximumHeightRequest="20" MaximumWidthRequest="20" Command="{Binding DeleteCommand}"/>
+                                <ImageButton Source="{AppThemeBinding Dark=remove_dark.png, Light=remove_light.png}" Command="{Binding DeleteCommand}"/>
                                 <Button Text="..." Command="{Binding EditCommand}"/>
                             </HorizontalStackLayout>
                         </Grid>
