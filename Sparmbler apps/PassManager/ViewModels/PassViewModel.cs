@@ -138,9 +138,10 @@ namespace PassManager.ViewModels
 
         private void AddKeyBody(object parameter)
         {
-
-            Passwords.Add(new(DefaultValuesGenerator.GenerateKeyName(Passwords.Select(i => i.Name)), 
-                Encoding.UTF8.GetBytes(_passGenerator.GenerateString())));
+            PasswordVisualItem item = new(new Password());
+            item.Name = DefaultValuesGenerator.GenerateKeyName(Passwords.Select(i => i.Name));
+            GeneratePassword(item);
+            Passwords.Add(item);
         }
 
 
@@ -149,7 +150,7 @@ namespace PassManager.ViewModels
         {
             try
             {
-                await _manager.PassReader.WritePassAsync(Passwords.ToDictionary(i => i.Name, i => i.Key));
+                await _manager.PassReader.WritePassAsync(Passwords.Select(i=>i.Password));
             }
             catch (Exception)
             {
@@ -189,7 +190,7 @@ namespace PassManager.ViewModels
             try
             {
                 var temp = await _manager.PassReader.ReadPassAsync();
-                Passwords = new(temp.Select(i => new PasswordVisualItem(i.Key, i.Value)));
+                Passwords = new(temp.Select(i => new PasswordVisualItem(i)));
                 SaveCommand.Disable();
             }
             catch (Exception)
@@ -268,13 +269,16 @@ namespace PassManager.ViewModels
 
     public class PasswordVisualItem : INotifyPropertyChanged
     {
-        public PasswordVisualItem(string name)
+        public PasswordVisualItem(Password password)
         {
-            Name = name;
-        }
-        public PasswordVisualItem(string name, byte[] key):this(name)
-        {
-            Key = key;
+            Password = password;
+            Name = password.Name;
+            Key = password.Value;
+            PropertyChanged += (o, e) =>
+            {
+                Password.Name = Name;
+                Password.Value = Key;
+            };
         }
 
         public OnlyEnabledCommand removeCommand;
@@ -292,6 +296,8 @@ namespace PassManager.ViewModels
         }
 
         private void CopyPassToClipboardBody(object parameter) => OnRequest(RequestedOperation.Copy);
+
+        public Password Password { get; init; }
 
         private string name;
         public string Name
