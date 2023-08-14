@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CancelTitle" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="DarkThemeName" xml:space="preserve">
     <value>Dark</value>
   </data>
   <data name="EnglishName" xml:space="preserve">
     <value>English</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
   </data>
   <data name="GeneralSettingName" xml:space="preserve">
     <value>General</value>
@@ -164,6 +170,9 @@
   </data>
   <data name="NameProperty" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="NotGeneratorsErrorMessage" xml:space="preserve">
+    <value>Not found generate key. Please, on generators in settings</value>
   </data>
   <data name="PassPatchsBarName" xml:space="preserve">
     <value>Pass</value>

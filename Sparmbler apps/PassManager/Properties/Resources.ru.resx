@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CancelTitle" xml:space="preserve">
+    <value>Ок</value>
+  </data>
   <data name="DarkThemeName" xml:space="preserve">
     <value>Тёмная</value>
   </data>
   <data name="EnglishName" xml:space="preserve">
     <value>Английский</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Ошибка</value>
   </data>
   <data name="GeneralSettingName" xml:space="preserve">
     <value>Общие</value>
@@ -161,6 +167,9 @@
   </data>
   <data name="NameProperty" xml:space="preserve">
     <value>Имя</value>
+  </data>
+  <data name="NotGeneratorsErrorMessage" xml:space="preserve">
+    <value>Не найден генератор ключа. Пожалуйста, включите его в настройках</value>
   </data>
   <data name="PassPatchsBarName" xml:space="preserve">
     <value>Файлы паролей</value>

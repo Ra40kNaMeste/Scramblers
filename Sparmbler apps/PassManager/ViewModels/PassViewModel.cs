@@ -4,6 +4,7 @@ using PassManager.Commands;
 using PassManager.Model;
 using PassManager.Settings;
 using PassManager.ViewConverters;
+using PassManager.Views;
 using Scrambler.NetFeistel;
 using System;
 using System.Collections.Generic;
@@ -98,12 +99,14 @@ namespace PassManager.ViewModels
                     pass.CopyPassToClipboardCommand.Enable();
         }
 
+        public void SetView(PassView view) => _view = view;
         #endregion //Constructions
 
         #region PrivateFields
 
         private ScramblerManager _manager;
         private PasswordGenerator _passGenerator;
+        private PassView _view;
 
         #endregion //PrivateFields
 
@@ -136,12 +139,12 @@ namespace PassManager.ViewModels
 
         #region CommandBody
 
-        private void AddKeyBody(object parameter)
+        private async void AddKeyBody(object parameter)
         {
             PasswordVisualItem item = new(new Password());
             item.Name = DefaultValuesGenerator.GenerateKeyName(Passwords.Select(i => i.Name));
-            GeneratePassword(item);
-            Passwords.Add(item);
+            if (await GeneratePassword(item))
+                Passwords.Add(item);
         }
 
 
@@ -150,7 +153,7 @@ namespace PassManager.ViewModels
         {
             try
             {
-                await _manager.PassReader.WritePassAsync(Passwords.Select(i=>i.Password));
+                await _manager.PassReader.WritePassAsync(Passwords.Select(i => i.Password));
             }
             catch (Exception)
             {
@@ -171,7 +174,7 @@ namespace PassManager.ViewModels
                     await CopyPassToClipboardBodyAsync(password);
                     break;
                 case RequestedOperation.Edit:
-                    GeneratePassword(password);
+                    await GeneratePassword(password);
                     SaveCommand.Enable();
                     break;
                 default:
@@ -213,7 +216,7 @@ namespace PassManager.ViewModels
                 using CryptoStream cs = new(ms, scrambler.CreateDecryptor(), CryptoStreamMode.Read);
                 byte[] buffer = new byte[1024];
                 int size;
-                while ((size = cs.Read(buffer, 0 ,1024)) != 0)
+                while ((size = cs.Read(buffer, 0, 1024)) != 0)
                 {
                     res.Write(buffer, 0, size);
                 }
@@ -231,32 +234,40 @@ namespace PassManager.ViewModels
             }
             catch (Exception ex)
             {
-
                 throw;
             }
 
         }
 
-        private void GeneratePassword(PasswordVisualItem item)
+        private async Task<bool> GeneratePassword(PasswordVisualItem item)
         {
             using var scrambler = new Twofish();
             scrambler.BlockSize = 128;
             scrambler.KeySize = 256;
 
             scrambler.SetKey(Encoding.UTF8.GetBytes(_manager.KeyReader.ReadKey()));
+            try
+            {
+                var passBuffer = Encoding.UTF8.GetBytes(_passGenerator.GenerateString());
+                using MemoryStream ms = new(passBuffer);
 
-            var passBuffer = Encoding.UTF8.GetBytes(_passGenerator.GenerateString());
-            using MemoryStream ms = new(passBuffer);
+                int sizeRes = ((passBuffer.Length - 1) / 16 + 1) * 16;
+                byte[] resBuffer = new byte[sizeRes];
+                using MemoryStream res = new MemoryStream(resBuffer);
+                using CryptoStream cs = new(res, scrambler.CreateEncryptor(), CryptoStreamMode.Write);
 
-            int sizeRes = ((passBuffer.Length - 1) / 16 + 1) * 16;
-            byte[] resBuffer = new byte[sizeRes];
-            using MemoryStream res = new MemoryStream(resBuffer);
-            using CryptoStream cs = new(res, scrambler.CreateEncryptor(), CryptoStreamMode.Write);
+                cs.Write(passBuffer, 0, passBuffer.Length);
+                cs.FlushFinalBlock();
 
-            cs.Write(passBuffer, 0, passBuffer.Length);
-            cs.FlushFinalBlock();
+                item.Key = resBuffer;
+                return true;
+            }
+            catch (NotActivityGeneratorException)
+            {
+                await _view?.DisplayAlert(Properties.Resources.ErrorTitle, Properties.Resources.NotGeneratorsErrorMessage, Properties.Resources.CancelTitle);
+                return false;
+            }
 
-            item.Key = resBuffer;
         }
 
         #endregion //Command body

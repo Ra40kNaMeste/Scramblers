@@ -61,6 +61,15 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ok.
+        /// </summary>
+        internal static string CancelTitle {
+            get {
+                return ResourceManager.GetString("CancelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Dark.
         /// </summary>
         internal static string DarkThemeName {
@@ -75,6 +84,15 @@ namespace PassManager.Properties {
         internal static string EnglishName {
             get {
                 return ResourceManager.GetString("EnglishName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Error.
+        /// </summary>
+        internal static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
             }
         }
         
@@ -201,6 +219,15 @@ namespace PassManager.Properties {
         internal static string NameProperty {
             get {
                 return ResourceManager.GetString("NameProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Not found generate key. Please, on generators in settings.
+        /// </summary>
+        internal static string NotGeneratorsErrorMessage {
+            get {
+                return ResourceManager.GetString("NotGeneratorsErrorMessage", resourceCulture);
             }
         }
         

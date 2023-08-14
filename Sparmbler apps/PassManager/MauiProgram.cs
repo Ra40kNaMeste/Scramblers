@@ -29,8 +29,9 @@ namespace PassManager
             builder.Configuration.AddConfiguration(config);
 
             RegisterModels(builder);
-            RegisterViewModels(builder);
             RegisterViews(builder);
+            RegisterViewModels(builder);
+            
 
 #if DEBUG
             builder.Logging.AddDebug();
@@ -45,6 +46,7 @@ namespace PassManager
             PasswordGenerator generator = new();
             builder.Services.AddSingleton(generator);
             UserSettings settings = new(generator);
+            settings.Apply();
             builder.Services.AddSingleton(settings);
         }
 
@@ -60,7 +62,7 @@ namespace PassManager
         {
             builder.Services.AddTransient<KeysView>();
             builder.Services.AddTransient<PassPathsView>();
-            builder.Services.AddTransient<PassView>();
+            builder.Services.AddSingleton<PassView>();
             builder.Services.AddTransient<SettingView>();
         }
     }

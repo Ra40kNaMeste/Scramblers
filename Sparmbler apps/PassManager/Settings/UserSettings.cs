@@ -26,8 +26,11 @@ namespace PassManager.Settings
             get => Enum.Parse<AppTheme>(Preferences.Get("Theme", AppTheme.Unspecified.ToString()));
             set
             {
-                App.Current.UserAppTheme = value;
-                Preferences.Set("Theme", value.ToString());
+                if (App.Current != null)
+                {
+                    App.Current.UserAppTheme = value;
+                    Preferences.Set("Theme", value.ToString());
+                }
             }
         }
         public int PasswordSize
@@ -58,7 +61,7 @@ namespace PassManager.Settings
                     System.Globalization.CultureInfo.CurrentCulture = new(value);
                     Thread.CurrentThread.CurrentCulture = new(value);
                     Thread.CurrentThread.CurrentUICulture = new(value);
-                    if (value != Language) 
+                    if (value != Language && App.Current != null) 
                     { 
                         (App.Current as App).MainPage = new AppShell();
                     }

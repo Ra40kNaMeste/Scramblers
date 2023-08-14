@@ -14,7 +14,7 @@ namespace PassManager.Model
         UppercaseChars = 2,
         NumberChars = 4,
         SpecialSymbol = 8,
-        All
+        All = 15
     }
     public class PasswordGenerator
     {
@@ -26,6 +26,7 @@ namespace PassManager.Model
         public void FillGenerators(PasswordGenerateMode mode)
         {
             Generators = _generateItems.Where(i => (i.Key & mode) != 0).Select(i => i.Value);
+            var temp = Generators.Count();
         }
         private Dictionary<PasswordGenerateMode, PasswordGeneratorItem> _generateItems = new()
         {
@@ -42,7 +43,7 @@ namespace PassManager.Model
             var useGenerators = Generators.Where(i => i.IsEnable);
             int countG = useGenerators.Count();
             if (countG == 0)
-                throw new Exception();
+                throw new NotActivityGeneratorException();
             var rbytes = System.Security.Cryptography.RandomNumberGenerator.GetBytes(Size * 2);
             var passwordBuffer = new char[Size];
             for (int i = 0; i < Size; i++)
@@ -56,6 +57,8 @@ namespace PassManager.Model
             return new string(passwordBuffer);
         }
     }
+
+    public class NotActivityGeneratorException : Exception { }
 
     public class PasswordGeneratorItem
     {
