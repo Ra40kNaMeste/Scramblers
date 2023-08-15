@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CancelTitle" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="CreateDBMessage" xml:space="preserve">
+    <value>Input database name</value>
+  </data>
+  <data name="CreateDBTitle" xml:space="preserve">
+    <value>Create database</value>
   </data>
   <data name="DarkThemeName" xml:space="preserve">
     <value>Dark</value>
@@ -140,9 +149,6 @@
   </data>
   <data name="GenerateModeLowercaseCharsName" xml:space="preserve">
     <value>Lower chars</value>
-  </data>
-  <data name="GenerateModeNoneName" xml:space="preserve">
-    <value>None</value>
   </data>
   <data name="GenerateModeNumberCharsName" xml:space="preserve">
     <value>Numbers</value>
@@ -174,6 +180,9 @@
   <data name="NotGeneratorsErrorMessage" xml:space="preserve">
     <value>Not found generate key. Please, on generators in settings</value>
   </data>
+  <data name="OkButton" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="PassPatchsBarName" xml:space="preserve">
     <value>Pass</value>
   </data>
@@ -196,7 +205,7 @@
     <value>password.bin</value>
   </data>
   <data name="SavePathDefaultName" xml:space="preserve">
-    <value>pass.db</value>
+    <value>pass</value>
   </data>
   <data name="SelectFileTitle" xml:space="preserve">
     <value>Select file</value>

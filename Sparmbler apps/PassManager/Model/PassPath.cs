@@ -160,25 +160,24 @@ namespace PassManager.Model
     }
 
     [JsonObject(MemberSerialization = MemberSerialization.OptOut)]
-    public class PassPathBySqlite : PassPathReaderBase, IPathByDriveable, IDisposable
+    public class PassPathBySqlite : PassPathReaderBase, IDisposable
     {
         public PassPathBySqlite() 
         {
-            Path = new();
+            DBPath = "";
         }
-        private PathByDrive path;
-        public PathByDrive Path
+        private string dbPath;
+        public string DBPath
         {
-            get => path;
+            get => dbPath;
             set
             {
-                path = value;
+                dbPath = value;
                 if (Context != null)
                 {
-                    Context.SaveChanges();
                     Context.Dispose();
                 }
-                Context = new(path.Path);
+                Context = new(dbPath);
             }
         }
 
@@ -193,6 +192,17 @@ namespace PassManager.Model
         {
             return Context.Passwords;
         }
+        public override List<PropertyInfo> GetVisualProeprties()
+        {
+            var res = base.GetVisualProeprties();
+            res.Add(typeof(PassPathBySqlite).GetProperty(nameof(DBPath)));
+            return res;
+        }
+
+        public async Task RemoveDataBaseAsync()
+        {
+            await Context.Database.EnsureDeletedAsync();
+        }
 
         public override void WritePass(IEnumerable<Password> pass)
         {
@@ -201,6 +211,7 @@ namespace PassManager.Model
             var deleteDates = old.Where(i => !pass.Contains(i));
             Context.Passwords.AddRange(newDates);
             Context.Passwords.RemoveRange(deleteDates);
+            Context.SaveChanges();
             Context.UpdateRange(pass);
             Context.SaveChanges();
         }

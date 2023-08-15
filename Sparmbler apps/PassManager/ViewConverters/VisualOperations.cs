@@ -102,6 +102,7 @@ namespace PassManager.ViewConverters
         {
             { nameof(KeyPathByDrive.Name), new NamePropertyConverter() },
             { nameof(KeyPathByDrive.Path), new PathPropertyConverter() },
+            {nameof(PassPathBySqlite.DBPath), new PathPropertyConverter() }
         };
         public static IValueConverter GetNamePropertyConverter(string name) => namePropertyConverters[name];
 

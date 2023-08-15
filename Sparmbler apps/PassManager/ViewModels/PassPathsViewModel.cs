@@ -19,9 +19,9 @@ using System.Threading.Tasks;
 namespace PassManager.ViewModels
 {
 
-    public class PassPathsViewModel: PathViewModelBase, IDisposable
+    public class PassPathsViewModel : PathViewModelBase, IDisposable
     {
-        public PassPathsViewModel(IConfiguration configuration, ScramblerManager manager):base(configuration)
+        public PassPathsViewModel(IConfiguration configuration, ScramblerManager manager) : base(configuration)
         {
             //Добавление связи с менеджером
             PropertyChanged += (o, e) =>
@@ -31,38 +31,43 @@ namespace PassManager.ViewModels
             };
 
             //Добавление удаления задействованных ресурсов
-            Paths.CollectionChanged += (o, e) =>
+            Paths.CollectionChanged += async (o, e) =>
             {
                 if (e.OldItems != null)
                     foreach (var item in e.OldItems)
                     {
                         if (item is IDisposable dis)
                             dis.Dispose();
+                        if(item is PathReaderVisual visual)
+                            if(visual.TargetKeyPath is PassPathBySqlite lite)
+                                await lite.RemoveDataBaseAsync();
+
                     }
             };
 
             DependencyService.Get<AppEventManager>().Destroying += (o, e) => Dispose();
         }
 
-
-
         #region OverrideMethods
 
         public override async Task GenerateBody()
         {
-            using var stream = new MemoryStream();
             try
             {
-                MemoryStream ms = new(new byte[0]);
-                var result = await FileSaver.Default.SaveAsync(Properties.Resources.SavePathDefaultName, ms, new CancellationToken());
-                ms.Dispose();
-                result.EnsureSuccess();
-                if (result != null)
-                {
-                    var path = new PassPathBySqlite();
-                    path.Path.SetPath(result.FilePath);
-                    AddPath(path);
-                }
+                if (TargetPage == null)
+                    return;
+                var path = await TargetPage.DisplayPromptAsync(Properties.Resources.CreateDBTitle,
+                    Properties.Resources.CreateDBMessage, Properties.Resources.OkButton,
+                    Properties.Resources.CancelButton, null, 100, Keyboard.Text,
+                    Properties.Resources.SavePathDefaultName);
+
+                if (path == null)
+                    return;
+                path = Path.Combine(FileSystem.AppDataDirectory, path + ".db");
+
+                var Database = new PassPathBySqlite();
+                Database.DBPath = path;
+                AddPath(Database);
             }
             catch (Exception ex)
             {
@@ -72,7 +77,7 @@ namespace PassManager.ViewModels
 
         public override void OpenPathBody(object parameter)
         {
-            AddPath(new PassPathByDrive());
+            AddPath(new PassPathBySqlite());
         }
 
         protected override CreatedValueOptions GetViewModelOptions() => new() { FileType = TargetFileType.Pass };

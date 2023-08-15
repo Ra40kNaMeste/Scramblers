@@ -61,11 +61,38 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        internal static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ok.
         /// </summary>
         internal static string CancelTitle {
             get {
                 return ResourceManager.GetString("CancelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Input database name.
+        /// </summary>
+        internal static string CreateDBMessage {
+            get {
+                return ResourceManager.GetString("CreateDBMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create database.
+        /// </summary>
+        internal static string CreateDBTitle {
+            get {
+                return ResourceManager.GetString("CreateDBTitle", resourceCulture);
             }
         }
         
@@ -129,15 +156,6 @@ namespace PassManager.Properties {
         internal static string GenerateModeLowercaseCharsName {
             get {
                 return ResourceManager.GetString("GenerateModeLowercaseCharsName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на None.
-        /// </summary>
-        internal static string GenerateModeNoneName {
-            get {
-                return ResourceManager.GetString("GenerateModeNoneName", resourceCulture);
             }
         }
         
@@ -232,6 +250,15 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ok.
+        /// </summary>
+        internal static string OkButton {
+            get {
+                return ResourceManager.GetString("OkButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pass.
         /// </summary>
         internal static string PassPatchsBarName {
@@ -295,7 +322,7 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на pass.db.
+        ///   Ищет локализованную строку, похожую на pass.
         /// </summary>
         internal static string SavePathDefaultName {
             get {
