@@ -11,7 +11,8 @@ namespace PassManager.Model
     {
         public PassDBContext(string path)
         {
-            _connectionString = $"Data Source={path}; Version=3;";
+            _connectionString = $"Data Source={path};";
+            Database.EnsureCreated();
         }
 
         private readonly string _connectionString;

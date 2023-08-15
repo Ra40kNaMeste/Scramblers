@@ -295,7 +295,7 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на pass.mps.
+        ///   Ищет локализованную строку, похожую на pass.db.
         /// </summary>
         internal static string SavePathDefaultName {
             get {

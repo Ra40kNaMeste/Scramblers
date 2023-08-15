@@ -196,7 +196,7 @@
     <value>password.bin</value>
   </data>
   <data name="SavePathDefaultName" xml:space="preserve">
-    <value>pass.mps</value>
+    <value>pass.db</value>
   </data>
   <data name="SelectFileTitle" xml:space="preserve">
     <value>Select file</value>

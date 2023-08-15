@@ -9,6 +9,8 @@ namespace PassManager.Settings
     
     internal class FileSettings
     {
+        public string AndroidPassFileType { get; set; }
+        public string AndroidKeyFileType { get; set; }
         public string[] KeyFileTypes { get; set; }
         public string[] PassFileTypes { get; set; }
     }

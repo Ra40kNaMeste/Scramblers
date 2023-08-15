@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace PassManager.ViewModels
 {
 
-    public class PassPathsViewModel: PathViewModelBase
+    public class PassPathsViewModel: PathViewModelBase, IDisposable
     {
         public PassPathsViewModel(IConfiguration configuration, ScramblerManager manager):base(configuration)
         {
@@ -29,7 +29,21 @@ namespace PassManager.ViewModels
                 if (e.PropertyName == nameof(SelectPath))
                     manager.PassReader = (PassPathReaderBase)SelectPath?.TargetKeyPath;
             };
+
+            //Добавление удаления задействованных ресурсов
+            Paths.CollectionChanged += (o, e) =>
+            {
+                if (e.OldItems != null)
+                    foreach (var item in e.OldItems)
+                    {
+                        if (item is IDisposable dis)
+                            dis.Dispose();
+                    }
+            };
+
+            DependencyService.Get<AppEventManager>().Destroying += (o, e) => Dispose();
         }
+
 
 
         #region OverrideMethods
@@ -39,10 +53,13 @@ namespace PassManager.ViewModels
             using var stream = new MemoryStream();
             try
             {
-                var result = await FileSaver.Default.SaveAsync(Properties.Resources.SavePathDefaultName, stream, new CancellationToken());
+                MemoryStream ms = new(new byte[0]);
+                var result = await FileSaver.Default.SaveAsync(Properties.Resources.SavePathDefaultName, ms, new CancellationToken());
+                ms.Dispose();
+                result.EnsureSuccess();
                 if (result != null)
                 {
-                    var path = new PassPathByDrive();
+                    var path = new PassPathBySqlite();
                     path.Path.SetPath(result.FilePath);
                     AddPath(path);
                 }
@@ -61,6 +78,16 @@ namespace PassManager.ViewModels
         protected override CreatedValueOptions GetViewModelOptions() => new() { FileType = TargetFileType.Pass };
 
         #endregion //OverrideMethods
+
+        public void Dispose()
+        {
+            foreach (var item in Paths)
+            {
+                if (item is IDisposable dis)
+                    dis.Dispose();
+            }
+        }
+
     }
 
 }

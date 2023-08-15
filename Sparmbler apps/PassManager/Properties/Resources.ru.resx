@@ -193,7 +193,7 @@
     <value>пароль.bin</value>
   </data>
   <data name="SavePathDefaultName" xml:space="preserve">
-    <value>пароль.mps</value>
+    <value>пароль.db</value>
   </data>
   <data name="SelectFileTitle" xml:space="preserve">
     <value>Путь...</value>

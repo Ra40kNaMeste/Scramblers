@@ -162,7 +162,10 @@ namespace PassManager.Model
     [JsonObject(MemberSerialization = MemberSerialization.OptOut)]
     public class PassPathBySqlite : PassPathReaderBase, IPathByDriveable, IDisposable
     {
-
+        public PassPathBySqlite() 
+        {
+            Path = new();
+        }
         private PathByDrive path;
         public PathByDrive Path
         {

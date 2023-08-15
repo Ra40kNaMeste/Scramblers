@@ -119,7 +119,7 @@ namespace PassManager.ViewConverters
                 if (platform == DevicePlatform.WinUI)
                     res.Add(platform, fileType.PassFileTypes.Select(i => "." + i));
                 else if(platform == DevicePlatform.Android)
-                    res.Add(platform, new List<string>() { "application/octet-stream" });
+                    res.Add(platform, new List<string>() { fileType.AndroidPassFileType });
 
             return res;
         }
@@ -132,7 +132,7 @@ namespace PassManager.ViewConverters
                 if (platform == DevicePlatform.WinUI)
                     res.Add(platform, fileType.KeyFileTypes.Select(i => "." + i));
                 else if (platform == DevicePlatform.Android)
-                    res.Add(platform, new List<string>() { "application/octet-stream" });
+                    res.Add(platform, new List<string>() { fileType.AndroidKeyFileType });
 
             return res;
         }
