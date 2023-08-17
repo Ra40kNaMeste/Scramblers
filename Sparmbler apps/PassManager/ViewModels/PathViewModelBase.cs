@@ -32,7 +32,7 @@ namespace PassManager.ViewModels
             Paths = new();
             //Запись при закрытии окна
             var eventManager = DependencyService.Get<AppEventManager>();
-            eventManager.Destroying += (o, e) => Save();
+            eventManager.Stopped += (o, e) => Save();
             //загрузка открытых паролей
             Open();
         }
@@ -129,7 +129,7 @@ namespace PassManager.ViewModels
         {
             var settings = Configuration.GetRequiredSection("Settings").Get<Settings.Settings>();
 
-            var path = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + settings.DataFolder + "\\";
+            var path = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + settings.DataFolder + "\\";
 
             path += GetPathXAMLBySaveKeys();
 
@@ -168,7 +168,7 @@ namespace PassManager.ViewModels
         private async void Save()
         {
             var settings = Configuration.GetRequiredSection("Settings").Get<Settings.Settings>();
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + settings.DataFolder;
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + settings.DataFolder;
             try
             {
                 if (!Directory.Exists(path))

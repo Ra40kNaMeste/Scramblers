@@ -11,17 +11,29 @@ namespace PassManager.Settings
     /// </summary>
     public class AppEventManager
     {
-        public AppEventManager() 
+        public AppEventManager(Window window) 
         {
-            
+            _window= window;
+        }
+        private Window _window;
+
+        public event EventHandler Destroying
+        {
+            add { _window.Destroying += value; }
+            remove { _window.Destroying -= value;}
         }
 
-        public void OnDestroying(object sender, EventArgs e)=>Destroying?.Invoke(sender, e);
-        public void OnCreated(object sender, EventArgs e) => Created?.Invoke(sender, e);
 
-
-        public event EventHandler Destroying;
-        public event EventHandler Created;
+        public event EventHandler Created
+        {
+            add { _window.Created += value; }
+            remove { _window.Created -= value; }
+        }
+        public event EventHandler Stopped
+        {
+            add { _window.Stopped += value; }
+            remove { _window.Stopped -= value; }
+        }
 
     }
 }

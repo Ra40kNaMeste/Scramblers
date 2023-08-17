@@ -184,7 +184,7 @@
     <value>Ok</value>
   </data>
   <data name="PassPatchsBarName" xml:space="preserve">
-    <value>Pass</value>
+    <value>passwords</value>
   </data>
   <data name="PasswordViewName" xml:space="preserve">
     <value>Passwords</value>

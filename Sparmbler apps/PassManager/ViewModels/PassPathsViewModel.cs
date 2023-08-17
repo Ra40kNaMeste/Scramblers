@@ -63,8 +63,6 @@ namespace PassManager.ViewModels
 
                 if (path == null)
                     return;
-                path = Path.Combine(FileSystem.AppDataDirectory, path + ".db");
-
                 var Database = new PassPathBySqlite();
                 Database.DBPath = path;
                 AddPath(Database);

@@ -15,10 +15,7 @@ namespace PassManager
         protected override Window CreateWindow(IActivationState activationState)
         {
             var res = base.CreateWindow(activationState);
-            AppEventManager eventManager = new();
-            res.Created += eventManager.OnCreated;
-            res.Destroying += eventManager.OnDestroying;
-
+            AppEventManager eventManager = new(res);
             DependencyService.RegisterSingleton(eventManager);
             return res;
         }

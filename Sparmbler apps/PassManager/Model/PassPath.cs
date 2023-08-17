@@ -177,7 +177,7 @@ namespace PassManager.Model
                 {
                     Context.Dispose();
                 }
-                Context = new(dbPath);
+                Context = new(Path.Combine(FileSystem.AppDataDirectory, dbPath + ".db"));
             }
         }
 
@@ -218,7 +218,7 @@ namespace PassManager.Model
 
         protected override bool CanEnable()
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

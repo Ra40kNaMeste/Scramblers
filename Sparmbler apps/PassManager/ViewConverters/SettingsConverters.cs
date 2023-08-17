@@ -55,7 +55,6 @@ namespace PassManager.ViewConverters
     {
         private Dictionary<PasswordGenerateMode, string> _modes = new()
         {
-            { PasswordGenerateMode.None, Properties.Resources.GenerateModeNoneName },
             { PasswordGenerateMode.NumberChars, Properties.Resources.GenerateModeNumberCharsName },
             { PasswordGenerateMode.UppercaseChars, Properties.Resources.GenerateModeUppercaseCharsName },
             { PasswordGenerateMode.All, Properties.Resources.GenerateModeAllName },
