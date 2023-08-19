@@ -79,6 +79,33 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Password not copy: unknow error.
+        /// </summary>
+        internal static string CopyPasswordFailed {
+            get {
+                return ResourceManager.GetString("CopyPasswordFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password not copy: Key not found.
+        /// </summary>
+        internal static string CopyPasswordKeyFailed {
+            get {
+                return ResourceManager.GetString("CopyPasswordKeyFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password is coped.
+        /// </summary>
+        internal static string CopyPasswordSuccessfully {
+            get {
+                return ResourceManager.GetString("CopyPasswordSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Input database name.
         /// </summary>
         internal static string CreateDBMessage {
@@ -259,7 +286,7 @@ namespace PassManager.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Pass.
+        ///   Ищет локализованную строку, похожую на passwords.
         /// </summary>
         internal static string PassPatchsBarName {
             get {

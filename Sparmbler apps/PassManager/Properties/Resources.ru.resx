@@ -123,6 +123,15 @@
   <data name="CancelTitle" xml:space="preserve">
     <value>Ок</value>
   </data>
+  <data name="CopyPasswordFailed" xml:space="preserve">
+    <value>Пароль не скопирован: неизвестная ошибка</value>
+  </data>
+  <data name="CopyPasswordKeyFailed" xml:space="preserve">
+    <value>Пароль не скопирован: ключ не найден</value>
+  </data>
+  <data name="CopyPasswordSuccessfully" xml:space="preserve">
+    <value>Пароль скопирован</value>
+  </data>
   <data name="CreateDBMessage" xml:space="preserve">
     <value>Введите название базы данных паролей</value>
   </data>

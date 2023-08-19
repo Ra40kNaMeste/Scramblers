@@ -123,6 +123,15 @@
   <data name="CancelTitle" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="CopyPasswordFailed" xml:space="preserve">
+    <value>Password not copy: unknow error</value>
+  </data>
+  <data name="CopyPasswordKeyFailed" xml:space="preserve">
+    <value>Password not copy: Key not found</value>
+  </data>
+  <data name="CopyPasswordSuccessfully" xml:space="preserve">
+    <value>Password is coped</value>
+  </data>
   <data name="CreateDBMessage" xml:space="preserve">
     <value>Input database name</value>
   </data>

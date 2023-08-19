@@ -29,15 +29,6 @@
                             </Grid.ColumnDefinitions>
                             <Label Text="{Binding Name}"/>
                             <HorizontalStackLayout Grid.Column="1">
-                                <Image MaximumHeightRequest="20" MaximumWidthRequest="20">
-                                    <Image.Source>
-                                        <Binding Path="IsSelect">
-                                            <Binding.Converter>
-                                                <con:SelectPropertyToPathImageConverter/>
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </Image.Source>
-                                </Image>
                                 <ImageButton Source="{AppThemeBinding Dark=remove_dark.png, Light=remove_light.png}" Command="{Binding DeleteCommand}"/>
                                 <Button Text="..." Command="{Binding EditCommand}"/>
                             </HorizontalStackLayout>

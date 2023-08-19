@@ -1,4 +1,4 @@
-﻿
+﻿using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Configuration;
 using PassManager.Commands;
 using PassManager.Model;
@@ -15,6 +15,8 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace PassManager.ViewModels
 {
@@ -171,7 +173,26 @@ namespace PassManager.ViewModels
                     SaveCommand.Enable();
                     break;
                 case RequestedOperation.Copy:
-                    await CopyPassToClipboardBodyAsync(password);
+                    string text;
+                    try
+                    {
+                        await CopyPassToClipboardBodyAsync(password);
+                        text = Properties.Resources.CopyPasswordSuccessfully;
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        text = Properties.Resources.CopyPasswordKeyFailed;
+                    }
+                    catch(Exception)
+                    {
+                        text = Properties.Resources.CopyPasswordFailed;
+                    }
+                    CancellationTokenSource source = new();
+
+                    var toast = CommunityToolkit.Maui.Alerts.Toast.Make(text, ToastDuration.Short, 14);
+
+                    await toast.Show(source.Token);
+                    source.Dispose();
                     break;
                 case RequestedOperation.Edit:
                     await GeneratePassword(password);

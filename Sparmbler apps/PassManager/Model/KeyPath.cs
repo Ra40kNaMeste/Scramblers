@@ -114,14 +114,14 @@ namespace PassManager.Model
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class KeyPathByDrive : KeyPathReaderBase, IPathByDriveable
     {
-        public KeyPathByDrive() 
+        public KeyPathByDrive()
         {
             Path = new();
         }
 
         private PathByDrive path;
         [JsonProperty]
-        public PathByDrive Path 
+        public PathByDrive Path
         {
             get => path;
             set
@@ -153,9 +153,9 @@ namespace PassManager.Model
             if (Path.DriveName != null)
             {
                 var drives = DriveInfo.GetDrives();
-                if(Path.DriveLabel != "")
+                if (Path.DriveLabel != "")
                 {
-                    var drive = drives.Where(i => i.VolumeLabel == Path.DriveLabel).FirstOrDefault();
+                    var drive = drives.Where(i => i.IsReady && i.VolumeLabel == Path.DriveLabel).FirstOrDefault();
                     if (drive != null)
                     {
                         Path.DriveName = drive.Name;
@@ -198,7 +198,7 @@ namespace PassManager.Model
     }
 
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class PathByDrive:INotifyPropertyChanged
+    public class PathByDrive : INotifyPropertyChanged
     {
 
         public PathByDrive() : base()
@@ -239,7 +239,7 @@ namespace PassManager.Model
         /// Имя диска. Если диск внутренний - нет
         /// </summary>
         [JsonProperty]
-        public string DriveName
+        public string DriveLabel
         {
             get => driveLabel;
             set
@@ -251,15 +251,19 @@ namespace PassManager.Model
 
         private string driveName;
         /// <summary>
-        /// Имя раздела
+        ///  раздела
         /// </summary>
         [JsonProperty]
-        public string DriveLabel
+        public string DriveName
         {
             get => driveName;
             set
             {
                 driveName = value;
+                if (Path != null && Path.Contains('\\'))
+                {
+                    Path = driveName + Path.Remove(0, Path.IndexOf('\\') + 1);
+                }
                 OnPropertyChanged();
             }
         }

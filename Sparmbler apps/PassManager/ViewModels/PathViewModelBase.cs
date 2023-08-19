@@ -30,11 +30,13 @@ namespace PassManager.ViewModels
         private void Initialize()
         {
             Paths = new();
+            //загрузка открытых паролей
+            Open();
             //Запись при закрытии окна
             var eventManager = DependencyService.Get<AppEventManager>();
             eventManager.Stopped += (o, e) => Save();
-            //загрузка открытых паролей
-            Open();
+            eventManager.Destroying+= (o, e) => Save();
+
         }
         #endregion//Constructions
 
@@ -146,8 +148,15 @@ namespace PassManager.ViewModels
                     {
                         foreach (var key in temp)
                         {
-                            key.Update();
-                            AddPath(key);
+                            try
+                            {
+                                key.Update();
+                                AddPath(key);
+                            }
+                            catch (Exception)
+                            {
+
+                            }
                         }
                     }
                 }
@@ -177,9 +186,6 @@ namespace PassManager.ViewModels
 
                 path += GetPathXAMLBySaveKeys();
 
-
-                if (!File.Exists(path))
-                    File.Create(path);
                 await File.WriteAllTextAsync(path, JsonConvert.SerializeObject(Paths.Select(i => i.TargetKeyPath).ToList(), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }));
 
             }
